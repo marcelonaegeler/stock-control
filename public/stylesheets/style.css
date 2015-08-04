@@ -1,0 +1,102 @@
+.navbar {
+	background-color: #444;
+}
+.navbar .item {
+	display: inline-block;
+	padding: 16px;
+	text-decoration: none;
+	color: #DC9FBA;
+	transition: color .06s linear;
+}
+.navbar .item:hover
+, .navbar .item:focus
+, .navbar .item.active {
+	color: #fff;
+}
+.navbar .item + .item {
+	margin-left: 5px;
+}
+
+/*
+* Headings
+*/
+.heading-1 {
+	padding: 30px 0;
+	font-size: 30px;
+}
+.heading-2 {
+	padding: 20px 0 20px 20px;
+	margin-bottom: 10px;
+	font-size: 40px;
+	line-height: 40px;
+	border-left: 10px solid #DC9FBA;
+}
+
+
+/*
+* Body
+*/
+.body {
+	max-width: 860px;
+	padding: 0 20px;
+	margin: 0 auto 20px;
+}
+.post {
+	position: relative;
+	max-width: 840px;
+	margin-top: 20px;
+	padding: 30px;
+	background-color: #fff;
+	border: 1px solid #eee;
+	border-radius: 6px;
+	line-height: 26px;
+}
+.post .author {
+	margin-bottom: 20px;
+}
+.post p + p {
+	margin-top: 15px;
+}
+
+
+.form {
+	margin-top: 50px;
+	padding: 20px;
+	background-color: #fff;
+}
+.form label {
+	margin-bottom: 10px;
+	display: block;
+}
+
+.btn {
+	padding: 5px;
+	border: none;
+	background-color: #fff;
+	font-size: 18px;
+}
+
+.btn-close {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+}
+
+
+
+
+/* Body Stock */
+table { width: 100%; }
+.wrapper { position: relative; }
+
+.addProduct.open { display: block; }
+.addProduct {
+	position: absolute;
+	top: 25px;
+	left: 0;
+	display: none;
+	background-color: #fff;
+}
+.addProduct label {
+	display: block;
+}

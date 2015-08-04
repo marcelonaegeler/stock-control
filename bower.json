@@ -1,0 +1,9 @@
+{
+  "name": "Blog",
+  "version": "0.0.1",
+  "homepage": "",
+  "license": "MIT",
+  "dependencies": {
+    "react": "~0.13.3"
+  }
+}
