@@ -66,8 +66,26 @@ var api = (function() {
 		request.send(data);
 	};
 
+	var changeSpecialChars = function(text) {
+		var chars = ['aáàãäâ', 'eéèëê', 'iíìïî', 'oóòõöô', 'uúùüû', 'cç'];
+		var value = text.toLowerCase();
+		for (var i in chars)
+			value = value.replace(new RegExp('[' + chars[i] + ']', 'g'), chars[i][0]);
+		return value;
+	};
+
+	var orderByName = function(a, b) {
+		var aName = a.name.toLowerCase()
+			, bName = b.name.toLowerCase();
+		if(aName < bName) return -1;
+		if(aName > bName) return 1;
+		return 0;
+	};
+
 	return {
 		ajax: ajax
 		, arrayPop: arrayPop
+		, changeSpecialChars: changeSpecialChars
+		, orderByName: orderByName
 	}
 })();

@@ -1,23 +1,34 @@
 {% extends 'default/layout.html' %}
 {% block body %}
-<body>
-	<section class="header">
-		<h1 class="heading-1">{{title}}</h1>
-		{#
-		<nav class="navbar">
-			<a href="" class="item">Link 01</a>
-			<a href="" class="item">Link 02</a>
-		</nav>
-		#}
-	</section>
+    <div id="wrapper">
+        {% include 'default/navigation.html' %}
 
-	<section class="body">
-		
-	</section>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Estoque de produtos</h1>
+                </div>
+            </div>
 
-	<script src="/vendor/react/react.js"></script>
-	<script src="/vendor/react/JSXTransformer.js"></script>
-	<script src="/javascripts/api.js"></script>
-	<script type="text/jsx" src="/javascripts/stock.js"></script>
-</body>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body react-body"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/vendor/metisMenu/dist/metisMenu.min.js"></script>
+    <script src="/javascripts/sb-admin-2.js"></script>
+
+    <!-- Marcelo's stuff -->
+    <script src="/vendor/react/react.js"></script>
+    <script src="/vendor/react/JSXTransformer.js"></script>
+    <script src="/javascripts/api.js"></script>
+    <script type="text/jsx" src="/javascripts/stock.js"></script>
 {% endblock %}

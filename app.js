@@ -20,7 +20,7 @@ app.use(function(req, res, next) {
 });
 
 app.get('/', function(req, res) {
-	return res.render('index', { title: 'Stock control' });
+	return res.render('index');
 });
 
 app.get('/api/products', function(req, res) {
@@ -32,10 +32,28 @@ app.get('/api/products', function(req, res) {
 	});
 });
 
-app.post('/api/product', function(req, res) {
+app.post('/api/product/new', function(req, res) {
 	var db = req.db;
 	var products = db.get('products');
 	products.insert({ name: req.body.name, stock: +req.body.stock }, function(err) {
+		if(err) throw err;
+		return res.send({ status: 0 });
+	});
+});
+
+app.post('/api/product/edit', function(req, res) {
+	var db = req.db;
+	var products = db.get('products');
+	products.findAndModify({ _id: req.body.id }, { $set: { name: req.body.name } }, function(err) {
+		if(err) throw err;
+		return res.send({ status: 0 });
+	});
+});
+
+app.post('/api/product/remove', function(req, res) {
+	var db = req.db;
+	var products = db.get('products');
+	products.remove({ _id: req.body.id }, function(err) {
 		if(err) throw err;
 		return res.send({ status: 0 });
 	});

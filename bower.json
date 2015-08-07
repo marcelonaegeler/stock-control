@@ -4,6 +4,10 @@
   "homepage": "",
   "license": "MIT",
   "dependencies": {
-    "react": "~0.13.3"
+    "react": "~0.13.3",
+    "jquery": "~2.1.4",
+    "bootstrap": "~3.3.5",
+    "metisMenu": "~2.0.3",
+    "font-awesome": "~4.4.0"
   }
 }
