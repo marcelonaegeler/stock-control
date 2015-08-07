@@ -23,6 +23,14 @@ app.get('/', function(req, res) {
 	return res.render('index');
 });
 
+app.get('/estoque', function(req, res) {
+	return res.render('stock');
+});
+
+app.get('/produtos', function(req, res) {
+	return res.render('products');
+});
+
 app.get('/api/products', function(req, res) {
 	var db = req.db;
 	var products = db.get('products');
@@ -35,7 +43,18 @@ app.get('/api/products', function(req, res) {
 app.post('/api/product/new', function(req, res) {
 	var db = req.db;
 	var products = db.get('products');
-	products.insert({ name: req.body.name, stock: +req.body.stock }, function(err) {
+
+	if(!req.body.name || !req.body.code) return res.send({ status: 1 });
+
+	var data = {
+		name: req.body.name
+		, stock: req.body.stock || 0
+		, code: req.body.code
+		, costPrice: req.body.costPrice || 0
+		, sellPrice: req.body.sellPrice || 0
+	};
+
+	products.insert(data, function(err) {
 		if(err) throw err;
 		return res.send({ status: 0 });
 	});

@@ -6,7 +6,10 @@
 
 	var ProductRow = React.createClass({
 		getInitialState: function() {
-			return { addValue: '', rmValue: '' };
+			return { name: '', defaultName: '', addValue: '', rmValue: '' };
+		}
+		, componentWillReceiveProps: function(props) {
+			this.setState({ name: props.product.name, defaultName: props.product.name });
 		}
 		, submitAdd: function(event) {
 			event.preventDefault();
@@ -53,13 +56,69 @@
 		, keydown: function(event) {
 			if(event.keyCode == 109 || event.keyCode == 189) return event.preventDefault();
 		}
+		, showHideEdit: function(event) {
+			var col = this.refs.nameColumn.getDOMNode();
+			col.classList.toggle('edit');
+			if(col.classList.contains('edit')) this.refs.inputName.getDOMNode().focus();
+		}
+		, clickCancelRename: function() {
+			this.setState({ name: this.state.defaultName });
+			this.showHideEdit();
+		}
+		, inputNameChange: function(event) {
+			this.setState({ name: event.target.value });
+		}
+		, submitName: function(event) {
+			event.preventDefault();
+			var name = this.state.name
+				, _id = this.refs._id.getDOMNode().value
+				, self = this;
+
+			api.ajax({
+				method: 'POST'
+				, url: '/api/product/edit'
+				, data: { name: name, id: _id }
+				, success: function(data) {
+					self.showHideEdit();
+					self.setState({ defaultName: self.state.name });
+					return self.props.update();
+					// return self.props.order();
+				}
+			});
+		}
+		, rmItem: function(event) {
+			var _id = this.refs._id.getDOMNode().value;
+			var self = this;
+
+			if(!confirm('Deseja mesmo excluir este produto?')) return;
+
+			api.ajax({
+				method: 'POST'
+				, url: '/api/product/remove'
+				, data: { id: _id }
+				, success: function(data) {
+					return self.props.update();
+				}
+			});
+		}
+		, componentDidMount: function() {
+			this.setState({ name: this.props.product.name, defaultName: this.props.product.name });
+		}
 		, render: function() {
 			var product = this.props.product;
+			/*
 			return (
 				<tr>
 					<td>{product.code || 0}</td>
 					<td className="productName" ref="nameColumn">
-						<span className="showName">{product.name}</span>
+						<span className="showName" title="Clique para editar" onClick={this.showHideEdit}>{this.state.name}</span>
+						<div className="editName">
+							<form onSubmit={this.submitName} className="form-inline">
+								<input ref="inputName" value={this.state.name} onChange={this.inputNameChange} className="form-control" />
+								<button type="submit" className="btn btn-success" title="Salvar"><i className="fa fa-check"></i></button>
+								<button type="button" className="btn btn-danger" onClick={this.clickCancelRename} title="Cancelar"><i className="fa fa-remove"></i></button>
+							</form>
+						</div>
 					</td>
 					<td>{product.stock}</td>
 					<td>
@@ -75,8 +134,12 @@
 							<input type="hidden" ref="_id" value={product._id} />
 						</form>
 					</td>
+					<td>
+						<button type="button" className="btn btn-danger" onClick={this.rmItem}><i className="fa fa-remove"></i> Remover</button>
+					</td>
 				</tr>
 			);
+			*/
 		}
 	});
 
@@ -111,7 +174,7 @@
 				<div className="row">
           <div className="col-sm-12">
             <div className="table-responsive">
-							<table className="table" cellPadding="0" cellSpacing="0">
+							<table className="table editable" cellPadding="0" cellSpacing="0">
 								<thead>
 									<tr>
 										<th>Código</th>
@@ -119,6 +182,7 @@
 										<th>Estoque</th>
 										<th>Adicionar</th>
 										<th>Remover</th>
+										<th>Remover produto</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -128,6 +192,67 @@
 						</div>
 					</div>
 				</div>
+			);
+		}
+	});
+
+	var ProductForm = React.createClass({
+		clickHandler: function() {
+			React.findDOMNode(this.refs.showHide).classList.toggle('open');
+		}
+		, submitHandler: function(event) {
+			event.preventDefault();
+			var self = this;
+
+			var name = this.refs.name.getDOMNode()
+				, stock = this.refs.stock.getDOMNode();
+			var nameVal = name.value.trim()
+				, stockVal = stock.value.trim();
+
+			if(!nameVal) return;
+			if(!stockVal) stockVal = 0;
+
+			var sent = { name: nameVal, stock: stockVal };
+
+			api.ajax({
+				method: 'POST'
+				, url: '/api/product/new'
+				, data: sent
+				, success: function(data) {
+					name.value = "";
+					stock.value = "";
+					return self.props.submitHandler(sent);
+				}
+			});
+		}
+		, render: function() {
+			return (
+
+				<form onSubmit={this.submitHandler} style={{padding: '0 20px'}}>
+					<div className="form-group">
+						<label htmlFor="code" className="form-label">Código:</label>
+						<input id="code" type="text" className="form-control" ref="code" />
+					</div>
+					<div className="form-group">
+						<label htmlFor="name" className="form-label">Produto:</label>
+						<input id="name" type="text" className="form-control" ref="name" />
+					</div>
+
+					<div className="form-group">
+						<label htmlFor="costPrice" className="form-label">Preço de custo:</label>
+						<input id="costPrice" type="text" className="form-control" ref="costPrice" />
+					</div>
+					<div className="form-group">
+						<label htmlFor="sellPrice" className="form-label">Preço de venda:</label>
+						<input id="sellPrice" type="text" className="form-control" ref="sellPrice" />
+					</div>
+					<div className="form-group">
+						<label htmlFor="stock" className="form-label">Estoque:</label>
+						<input id="stock" type="text" className="form-control" ref="stock" />
+					</div>
+
+					<button type="submit" className="btn btn-primary">Cadastrar</button>
+      	</form>
 			);
 		}
 	});
@@ -180,6 +305,13 @@
 		, render: function() {
 			return (
 				<div>
+					<div className="row">
+						<div className="col-sm-12">
+							<div className="jumbotron ">
+								<ProductForm submitHandler={this.getContent} />
+							</div>
+						</div>
+					</div>
 					<div className="row">
           	<div className="col-sm-6">
 							<SearchBar search={this.state.search} changeHandler={this.searchHandler} />

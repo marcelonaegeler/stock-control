@@ -1,0 +1,35 @@
+PRODUTOS (novo módulo)
+
+Form de inserção (no topo)
+---------------------
+xCódigo
+xProduto
+xPreço de custo
+xPreço de venda
+xEstoque inicial
+
+
+Table
+---------------------
+Topo: Pesquisa
+--
+Código
+Produto
+Preço de custo
+Preço de venda
+Button Remover
+
+
+
+ESTOQUE DE PRODUTOS
+
+Remover
+x- inserção
+x- edição do nome do produto
+x- button Remover
+
+Inserir
+x- coluna com código (na frente do nome)
+
+Ajuste
+Pesquisa por código tbm deve rolar
