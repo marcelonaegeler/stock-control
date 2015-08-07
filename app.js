@@ -87,6 +87,6 @@ app.use(function(req, res, next) {
   return res.render('notFound');
 });
 
-app.listen(3000, function() {
+app.listen(3001, function() {
 	console.log('Magic happens on port 3000');
 });
