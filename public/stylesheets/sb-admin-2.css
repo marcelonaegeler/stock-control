@@ -360,16 +360,8 @@ table.dataTable thead .sorting:after {
 .dataTables_filter { text-align: left; }
 .dataTables_filter input { margin-left: 10px; }
 
-.textAlign {
-  display: block;
-  width: 100%;
-  height: 34px;
-  padding: 6px 12px;
-  font-size: 14px;
-  line-height: 1.42857143;
-  color: #555;
-}
 
+/*
 .productName .showName {
     display: block;
     width: 100%;
@@ -388,3 +380,27 @@ table.dataTable thead .sorting:after {
 .editable .productName .editName { display: none; }
 .editable .productName.edit .showName { display: none; }
 .editable .productName.edit .editName { display: block; }
+*/
+
+.field-label {
+  display: block;
+  cursor: pointer;
+  border: 1px solid #fff;
+  border-radius: 5px;
+}
+.field-label:hover {
+  border-color: #ccc;
+}
+.field-editable { display: none; }
+
+.open .field-label { display: none; }
+.open .field-editable { display: block; }
+
+.textAlign {
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+}

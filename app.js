@@ -61,9 +61,19 @@ app.post('/api/product/new', function(req, res) {
 });
 
 app.post('/api/product/edit', function(req, res) {
+	if(req.body.field == 'code'
+		|| req.body.field == 'name'
+		|| req.body.field == 'costPrice'
+		|| req.body.field == 'sellPrice') {
+		var dataSet = {};
+		dataSet[req.body.field] = req.body.value;
+	} else {
+		return res.send({ status: 1 });
+	}
 	var db = req.db;
 	var products = db.get('products');
-	products.findAndModify({ _id: req.body.id }, { $set: { name: req.body.name } }, function(err) {
+
+	products.update({ _id: req.body.id }, { $set: dataSet }, function(err) {
 		if(err) throw err;
 		return res.send({ status: 0 });
 	});

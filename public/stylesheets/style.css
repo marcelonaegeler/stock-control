@@ -89,6 +89,7 @@
 table { width: 100%; }
 .wrapper { position: relative; }
 
+/*
 .addProduct.open { display: block; }
 .addProduct {
 	position: absolute;
@@ -100,3 +101,5 @@ table { width: 100%; }
 .addProduct label {
 	display: block;
 }
+
+*/

@@ -2,6 +2,31 @@
 	"use strict";
 
 	/*
+	* Money input
+	*/
+	var MoneyInput = React.createClass({
+		getInitialState: function() {
+			return { value: this.props.value };
+		}
+		, componentDidMount: function() {
+			var input = $(this.refs.input.getDOMNode());
+			input.maskMoney({
+				thousands: '.'
+				, decimal: ','
+				, prefix: 'R$ '
+				, affixesStay: false
+			});
+		}
+		, render: function() {
+			return (
+				<input type="text" id={this.props.id} className="form-control" ref="input" onChange={this.props.prop} value={this.state.value} />
+			)
+		}
+	});
+
+
+
+	/*
 	* Editable Table
 	*/
 	var EditableTable = React.createClass({
@@ -17,7 +42,7 @@
 			this.props.products.map(function(product, index) {
 				var name = api.changeSpecialChars(product.name); // remove accents to compare
 
-				if((new RegExp(search, "i")).test(name))
+				if((new RegExp(search, "i")).test(name) || (new RegExp(search, "i")).test(product.code))
 					rows.push(<EditableRow product={product} update={self.props.update} key={index} />);
 			});
 
@@ -43,6 +68,7 @@
 			);
 		}
 	});
+
 	var EditableRow = React.createClass({
 		rmItem: function(event) {
 			var _id = this.refs._id.getDOMNode().value;
@@ -62,13 +88,13 @@
 		, render: function() {
 			return (
 				<tr>
-					<EditableCell prop={this.props.product.code} />
-					<EditableCell prop={this.props.product.name} />
-					<EditableCell prop={this.props.product.costPrice} />
-					<EditableCell prop={this.props.product.sellPrice} />
+					<EditableCell update={this.props.update} prop={this.props.product.code} propName="code" productId={this.props.product._id} />
+					<EditableCell update={this.props.update} prop={this.props.product.name} propName="name" productId={this.props.product._id} />
+					<EditableCell update={this.props.update} prop={this.props.product.costPrice} propName="costPrice" productId={this.props.product._id} currencyField="true" />
+					<EditableCell update={this.props.update} prop={this.props.product.sellPrice} propName="sellPrice" productId={this.props.product._id} currencyField="true" />
 					<td>
 						<input type="hidden" ref="_id" value={this.props.product._id} />
-						<button>Remover</button>
+						<button type="button" onClick={this.rmItem}>Remover</button>
 					</td>
 				</tr>
 			);
@@ -88,10 +114,57 @@
 	});
 
 	var EditableCell = React.createClass({
-		render: function() {
+		getInitialState: function() {
+			return { value: this.props.prop, tmpValue: this.props.prop };
+		}
+		, inputChange: function(event) {
+			console.log(event.target.value);
+			this.setState({ tmpValue: event.target.value });
+		}
+		, saveNewValue: function(event) {
+			event.preventDefault();
+			this.setState({ value: this.state.tmpValue });
+
+			var data = {};
+			data.field = this.props.propName;
+			data.id = this.props.productId;
+			data.value = this.state.tmpValue;
+
+			var self = this;
+			api.ajax({
+				url: '/api/product/edit'
+				, method: 'POST'
+				, data: data
+				, success: function(res) {
+					//self.editField();
+					self.props.update();
+				}
+			});
+		}
+		, editField: function() {
+			var column = this.refs.column.getDOMNode();
+			column.classList.toggle('open');
+			this.setState({ tmpValue: this.state.value });
+			if(column.classList.contains('open'))
+				this.refs.input.getDOMNode().focus();
+		}
+		, render: function() {
+			var input;
+			if(this.props.currencyField)
+				input = <MoneyInput ref="input" prop={this.inputChange} value={this.state.tmpValue} />;
+			else
+				input = <input type="text" ref="input" className="form-control" onChange={this.inputChange} value={this.state.tmpValue} />
+
 			return (
-				<td>
-					<span className="textAlign">{this.props.prop}</span>
+				<td ref="column">
+					<span className="field-label textAlign" onClick={this.editField} title="Clique para editar">
+						{this.props.currencyField ? 'R$ ' : ''}{this.state.value}
+					</span>
+					<form className="form-inline field-editable" onSubmit={this.saveNewValue}>
+						{input}
+						<button type="submit" className="btn btn-success" title="Salvar"><i className="fa fa-check"></i></button>
+						<button type="button" className="btn btn-danger" onClick={this.editField} title="Cancelar"><i className="fa fa-close"></i></button>
+					</form>
 				</td>
 			);
 		}
@@ -116,7 +189,6 @@
 			);
 		}
 	});
-
 
 	/*
 	* Product add form
@@ -165,14 +237,13 @@
 						<label htmlFor="name" className="form-label">Produto:</label>
 						<input id="name" type="text" className="form-control" ref="name" />
 					</div>
-
 					<div className="form-group">
-						<label htmlFor="costPrice" className="form-label">Preço de custo:</label>
-						<input id="costPrice" type="text" className="form-control" ref="costPrice" />
+						<label htmlFor="costPrice" className="form-label">Preço de custo (R$):</label>
+						<MoneyInput id="costPrice" ref="costPrice" />
 					</div>
 					<div className="form-group">
-						<label htmlFor="sellPrice" className="form-label">Preço de venda:</label>
-						<input id="sellPrice" type="text" className="form-control" ref="sellPrice" />
+						<label htmlFor="sellPrice" className="form-label">Preço de venda (R$):</label>
+						<MoneyInput id="sellPrice" ref="sellPrice" />
 					</div>
 					<div className="form-group">
 						<label htmlFor="stock" className="form-label">Estoque:</label>
@@ -184,7 +255,6 @@
 			);
 		}
 	});
-
 
 	/*
 	* Compose body
@@ -200,7 +270,7 @@
 				url: this.props.url
 				, method: 'GET'
 				, success: function(data) {
-					//self.setState({ products: [] });
+					self.setState({ products: [] });
 					var products = data.sort(api.orderByName);
 					self.setState({ products: products });
 				}
@@ -235,7 +305,7 @@
 
 						</div>
 					</div>
-					<EditableTable products={this.state.products} columns={this.props.columns} search={this.state.search} update={this.getContent} />
+					<EditableTable products={this.state.products} columns={this.props.columns} search={this.state.search} update={this.getContent} order={this.order} />
 				</div>
 			);
 		}
