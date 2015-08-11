@@ -6,20 +6,18 @@
 	*/
 	var MoneyInput = React.createClass({
 		getInitialState: function() {
-			return { value: this.props.value };
+			return { value: this.props.val };
 		}
 		, componentDidMount: function() {
-			var input = $(this.refs.input.getDOMNode());
-			input.maskMoney({
-				thousands: '.'
-				, decimal: ','
-				, prefix: 'R$ '
-				, affixesStay: false
+			VMasker(this.refs.input.getDOMNode()).maskMoney({
+				precision: 2
+				, separator: ','
+				, delimiter: '.'
 			});
 		}
 		, render: function() {
 			return (
-				<input type="text" id={this.props.id} className="form-control" ref="input" onChange={this.props.prop} value={this.state.value} />
+				<input type="text" className="form-control" ref="input" onChange={this.props.change} value={this.state.value} />
 			)
 		}
 	});
@@ -118,7 +116,6 @@
 			return { value: this.props.prop, tmpValue: this.props.prop };
 		}
 		, inputChange: function(event) {
-			console.log(event.target.value);
 			this.setState({ tmpValue: event.target.value });
 		}
 		, saveNewValue: function(event) {
@@ -136,7 +133,6 @@
 				, method: 'POST'
 				, data: data
 				, success: function(res) {
-					//self.editField();
 					self.props.update();
 				}
 			});
@@ -148,20 +144,23 @@
 			if(column.classList.contains('open'))
 				this.refs.input.getDOMNode().focus();
 		}
+		, componentDidMount: function() {
+			if(this.props.currencyField) {
+				VMasker(this.refs.input.getDOMNode()).maskMoney({
+					precision: 2
+					, separator: ','
+					, delimiter: '.'
+				});
+			}
+		}
 		, render: function() {
-			var input;
-			if(this.props.currencyField)
-				input = <MoneyInput ref="input" prop={this.inputChange} value={this.state.tmpValue} />;
-			else
-				input = <input type="text" ref="input" className="form-control" onChange={this.inputChange} value={this.state.tmpValue} />
-
 			return (
 				<td ref="column">
 					<span className="field-label textAlign" onClick={this.editField} title="Clique para editar">
 						{this.props.currencyField ? 'R$ ' : ''}{this.state.value}
 					</span>
 					<form className="form-inline field-editable" onSubmit={this.saveNewValue}>
-						{input}
+						<input type="text" ref="input" className="form-control" onChange={this.inputChange} value={this.state.tmpValue} />
 						<button type="submit" className="btn btn-success" title="Salvar"><i className="fa fa-check"></i></button>
 						<button type="button" className="btn btn-danger" onClick={this.editField} title="Cancelar"><i className="fa fa-close"></i></button>
 					</form>
@@ -201,7 +200,7 @@
 
 			var name = this.refs.name.getDOMNode().value.trim()
 				, code = this.refs.code.getDOMNode().value.trim()
-				, stock = this.refs.stock.getDOMNode().value.trim() || 0
+				, stock = +this.refs.stock.getDOMNode().value.trim() || 0
 				, costPrice = this.refs.costPrice.getDOMNode().value.trim() || 0
 				, sellPrice = this.refs.sellPrice.getDOMNode().value.trim() || 0
 				;

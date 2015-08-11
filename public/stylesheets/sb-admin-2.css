@@ -384,11 +384,11 @@ table.dataTable thead .sorting:after {
 
 .field-label {
   display: block;
-  cursor: pointer;
   border: 1px solid #fff;
   border-radius: 5px;
 }
-.field-label:hover {
+.editable .field-label { cursor: pointer; }
+.editable .field-label:hover {
   border-color: #ccc;
 }
 .field-editable { display: none; }

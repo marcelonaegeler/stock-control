@@ -48,7 +48,7 @@ app.post('/api/product/new', function(req, res) {
 
 	var data = {
 		name: req.body.name
-		, stock: req.body.stock || 0
+		, stock: +req.body.stock || 0
 		, code: req.body.code
 		, costPrice: req.body.costPrice || 0
 		, sellPrice: req.body.sellPrice || 0
@@ -64,7 +64,8 @@ app.post('/api/product/edit', function(req, res) {
 	if(req.body.field == 'code'
 		|| req.body.field == 'name'
 		|| req.body.field == 'costPrice'
-		|| req.body.field == 'sellPrice') {
+		|| req.body.field == 'sellPrice'
+		|| req.body.field == 'stock') {
 		var dataSet = {};
 		dataSet[req.body.field] = req.body.value;
 	} else {

@@ -1,55 +1,15 @@
 (function() {
 	"use strict";
 
-	/*
-	* Editable Table
-	*/
-	var EditableTable = React.createClass({
-		mapHead: function(col, index) {
-			return (<th key={index}>{col}</th>);
-		}
-		, render: function() {
-			var search = api.changeSpecialChars(this.props.search)
-				, self = this
-				, rows = [];
+	// Element that will show the table rows
+	var showArea = document.querySelector('.react-body');
 
-			this.props.products.map(function(product, index) {
-				var name = api.changeSpecialChars(product.name); // remove accents to compare
-
-				if((new RegExp(search, "i")).test(name) || (new RegExp(search, "i")).test(product.code))
-					rows.push(<EditableRow product={product} update={self.props.update} key={index} />);
-			});
-
-			if(!rows.length) rows.push(<NotFoundRow key="-1" />);
-
-			return (
-				<div className="row">
-          <div className="col-sm-12">
-						<div className="table-responsive">
-							<table className="table" cellPadding="0" cellSpacing="0">
-								<thead>
-									<tr>
-										{this.props.columns.map(this.mapHead)}
-									</tr>
-								</thead>
-								<tbody>
-									{rows}
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			);
-		}
-	});
-
-	var EditableRow = React.createClass({
+	var ProductRow = React.createClass({
 		getInitialState: function() {
 			return { addValue: '', rmValue: '' };
 		}
 		, submitAdd: function(event) {
 			event.preventDefault();
-			
 			var stockAdd = this.state.addValue
 				, _id = this.refs._id.getDOMNode().value
 				, self = this;
@@ -94,17 +54,14 @@
 			if(event.keyCode == 109 || event.keyCode == 189) return event.preventDefault();
 		}
 		, render: function() {
+			var product = this.props.product;
 			return (
 				<tr>
-					<td>
-						<span className="field-label textAlign">{this.props.product.code}</span>
+					<td>{product.code || 0}</td>
+					<td className="productName" ref="nameColumn">
+						<span className="showName">{product.name}</span>
 					</td>
-					<td>
-						<span className="field-label textAlign">{this.props.product.name}</span>
-					</td>
-					<td>
-						<span className="field-label textAlign">{this.props.product.stock}</span>
-					</td>
+					<td>{product.stock}</td>
 					<td>
 						<form onSubmit={this.submitAdd} className="form-inline">
 							<input type="text" ref="add" className="form-control" value={this.state.addValue} onChange={this.inputAddChange} onKeyDown={this.keydown} />
@@ -115,7 +72,7 @@
 						<form onSubmit={this.submitRm} className="form-inline">
 							<input type="text" ref="rm" className="form-control" value={this.state.rmValue} onChange={this.inputRmChange} onKeyDown={this.keydown} />
 							<button type="submit" className="btn btn-danger"><i className="fa fa-remove"></i></button>
-							<input type="hidden" ref="_id" value={this.props.product._id} />
+							<input type="hidden" ref="_id" value={product._id} />
 						</form>
 					</td>
 				</tr>
@@ -123,7 +80,7 @@
 		}
 	});
 
-	var NotFoundRow = React.createClass({
+	var ProductNotFound = React.createClass({
 		render: function() {
 			return (
 				<tr>
@@ -135,16 +92,53 @@
 		}
 	});
 
-	/*
-	* Search Bar
-	*/
+	var ProductRows = React.createClass({
+		render: function() {
+			var rows = []
+				, search = api.changeSpecialChars(this.props.search) // remove accents to compare
+				, self = this;
+			this.props.products.map(function(product, index) {
+				var name = api.changeSpecialChars(product.name); // remove accents to compare
+
+				if((new RegExp(search, "i")).test(name))
+					rows.push(<ProductRow update={self.props.update} order={self.props.order} product={product} key={index} />);
+			});
+
+			if(!rows.length)
+				rows.push(<ProductNotFound key="-1" />);
+
+			return (
+				<div className="row">
+          <div className="col-sm-12">
+            <div className="table-responsive">
+							<table className="table" cellPadding="0" cellSpacing="0">
+								<thead>
+									<tr>
+										<th>Código</th>
+										<th>Produto</th>
+										<th>Estoque</th>
+										<th>Adicionar</th>
+										<th>Remover</th>
+									</tr>
+								</thead>
+								<tbody>
+									{rows}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			);
+		}
+	});
+
 	var SearchBar = React.createClass({
 		changeHandler: function() {
 			this.props.changeHandler(this.refs.searchInput.getDOMNode().value);
 		}
 		, render: function() {
 			return (
-				<div className="dataTables_filter form-inline">
+        <div className="dataTables_filter form-inline">
 					<label>
 						Pesquisar:
 						<input type="text" placeholder="Digite aqui..." className="form-control" ref="searchInput" value={this.props.search} onChange={this.changeHandler} />
@@ -154,29 +148,27 @@
 		}
 	});
 
-	/*
-	* Compose body
-	*/
+
 	var BodyCompose = React.createClass({
 		getInitialState: function() {
 			return { products: [], search: '' };
 		}
 		// Get the content via Ajax
 		, getContent: function() {
-			var self = this;
-			api.ajax({
-				url: this.props.url
-				, method: 'GET'
-				, success: function(data) {
-					self.setState({ products: [] });
-					var products = data.sort(api.orderByName);
-					self.setState({ products: products });
-				}
-			});
-		}
-		, order: function() {
-			this.setState({ products: this.state.products.sort(api.orderByName) });
-		}
+	    var self = this;
+	    api.ajax({
+	      url: this.props.url
+	      , method: 'GET'
+	      , success: function(data) {
+	      	//self.setState({ products: [] });
+	      	var products = data.sort(api.orderByName);
+	        self.setState({ products: products });
+	      }
+	    });
+	  }
+	  , order: function() {
+	  	this.setState({ products: this.state.products.sort(api.orderByName) });
+	  }
 		// Handle the search input changes
 		, searchHandler: function(searchText) {
 			this.setState({ search: searchText });
@@ -189,21 +181,18 @@
 			return (
 				<div>
 					<div className="row">
-						<div className="col-sm-6">
+          	<div className="col-sm-6">
 							<SearchBar search={this.state.search} changeHandler={this.searchHandler} />
 						</div>
 						<div className="col-sm-6">
 
 						</div>
 					</div>
-					<EditableTable products={this.state.products} columns={this.props.columns} search={this.state.search} update={this.getContent} order={this.order} />
+					<ProductRows update={this.getContent} order={this.order} search={this.state.search} products={this.state.products} />
 				</div>
 			);
 		}
 	});
 
-	var showArea = document.querySelector('.react-body');
-	var columns = [ 'Código', 'Nome', 'Estoque', 'Adicionar', 'Remover' ];
-
-	React.render(<BodyCompose url="/api/products" columns={columns} />, showArea);
+	React.render(<BodyCompose url="/api/products" />, showArea);
 })();
