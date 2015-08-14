@@ -1,0 +1,70 @@
+{% extends '../default/layout.html' %}
+{% block body %}
+    <div id="wrapper">
+        {% include '../default/navigation.html' %}
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Clientes</h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <a href="/{{module}}/novo" class="btn btn-primary">Cadastrar</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>Cliente</th>
+                                <th>Telefone</th>
+                                <th>Carros</th>
+                                <th>Ações</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for client in clients %}
+                                <tr>
+                                  <td>{{client.client}}</td>
+                                  <td>{{client.phone}}</td>
+                                  <td>
+                                    {% for car in client.car %}
+                                      {{car.plate}}
+                                    {% endfor %}
+                                  </td>
+                                  <td>
+                                    <a href="/{{module}}/editar/{{client._id.toString()}}" class="btn btn-primary"><i class="fa fa-edit"></i> Editar</a>
+                                    <a href="/{{module}}/remover/{{client._id.toString()}}" class="btn btn-danger btn-remove"><i class="fa fa-close"></i> Remover</a>
+                                  </td>
+                                </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/vendor/metisMenu/dist/metisMenu.min.js"></script>
+    <script src="/javascripts/sb-admin-2.js"></script>
+    <script type="text/javascript">
+    (function() {
+      $('.btn-remove').click(function(event) {
+        if(!confirm('Deseja mesmo excluir este cliente?')) return false;
+        return true;
+      });
+    })();
+    </script>
+{% endblock %}

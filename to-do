@@ -1,6 +1,6 @@
 PRODUTOS (novo módulo)
 
-Form de inserção (no topo)
+Form de inserção (no topo) >>> Feito <<<
 ---------------------
 xCódigo
 xProduto
@@ -9,7 +9,7 @@ xPreço de venda
 xEstoque inicial
 
 
-Table
+Table - >>> Feito <<<
 ---------------------
 Topo: Pesquisa
 --
@@ -32,4 +32,4 @@ Inserir
 x- coluna com código (na frente do nome)
 
 Ajuste
-Pesquisa por código tbm deve rolar
+x- Pesquisa por código tbm deve rolar

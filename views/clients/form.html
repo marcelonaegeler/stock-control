@@ -1,0 +1,92 @@
+{% extends '../default/layout.html' %}
+{% block body %}
+    <div id="wrapper">
+        {% include '../default/navigation.html' %}
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Clientes</h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                          <form action="/{{module}}/{% if client %}editar{% else %}novo{%endif%}" method="POST">
+                            <div class="form-group">
+                              <label>
+                                Cliente: <input type="text" name="client" class="form-control" value="{{client.client}}" />
+                              </label>
+                            </div>
+														<div class="form-group">
+                              <label>
+                                Telefone: <input type="text" name="phone" class="form-control" value="{{client.phone}}" />
+                              </label>
+                            </div>
+
+														<hr />
+
+														<h3>Veículos</h3>
+														<a href="#" id="addCar">Adicionar</a>
+
+
+														{% for car in client.car %}
+                            <div class="list-cars">
+															<div class="form-group form-inline">
+																<label>
+                                	Modelo: <input type="text" name="car" class="form-control" value="{{car.model}}" />
+                              	</label>
+																<label>
+                              	  Placa: <input type="text" name="plate" class="form-control" value="{{car.plate}}" />
+                              	</label>
+															</div>
+														</div>
+                            {% endfor %}
+
+                            {% if !client.car.length %}
+                            <div class="list-cars">
+															<div class="form-group form-inline">
+																<label>
+                                	Modelo: <input type="text" name="car" class="form-control" />
+                              	</label>
+																<label>
+                              	  Placa: <input type="text" name="plate" class="form-control" />
+                              	</label>
+															</div>
+														</div>
+                            {% endif %}
+
+                           	<div class="form-group">
+                              <input type="hidden" name="_id" value="{{client._id.toString()}}" />
+                              <button type="submit" class="btn btn-success">Salvar</button>
+                            </div>
+                          </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/vendor/metisMenu/dist/metisMenu.min.js"></script>
+    <script src="/javascripts/sb-admin-2.js"></script>
+		<script>
+		(function() {
+			var btnAdd = $('#addCar');
+			var carListTemplate = [ '<div class="form-group form-inline">'
+				, '<label>Modelo: <input type="text" name="car" class="form-control" value="{{car}}" />'
+      	, '</label><label>'
+        , 'Placa: <input type="text" name="plate" class="form-control" value="{{plate}}" />'
+      	, '</label></div>' ].join('');
+
+      btnAdd.click(function() {
+				$('.list-cars').append(carListTemplate);
+			});
+		})();
+		</script>
+{% endblock %}

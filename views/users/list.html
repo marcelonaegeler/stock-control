@@ -1,0 +1,53 @@
+{% extends '../default/layout.html' %}
+{% block body %}
+    <div id="wrapper">
+        {% include '../default/navigation.html' %}
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Usuários</h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <a href="/usuarios/novo" class="btn btn-primary">Cadastrar</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>Nome</th>
+                                <th>Tipo de usuário</th>
+                                <th>Ações</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>Marcelo</td>
+                                <td>admin</td>
+                                <td>
+                                  <a href="/usuarios/editar/id" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/vendor/metisMenu/dist/metisMenu.min.js"></script>
+    <script src="/javascripts/sb-admin-2.js"></script>
+{% endblock %}
