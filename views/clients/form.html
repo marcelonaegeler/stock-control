@@ -36,10 +36,10 @@
                             <div class="list-cars">
 															<div class="form-group form-inline">
 																<label>
-                                	Modelo: <input type="text" name="car" class="form-control" value="{{car.model}}" />
+                                	Modelo: <input type="text" name="car[]" class="form-control" value="{{car.model}}" />
                               	</label>
 																<label>
-                              	  Placa: <input type="text" name="plate" class="form-control" value="{{car.plate}}" />
+                              	  Placa: <input type="text" name="plate[]" class="form-control" value="{{car.plate}}" />
                               	</label>
 															</div>
 														</div>
@@ -49,10 +49,10 @@
                             <div class="list-cars">
 															<div class="form-group form-inline">
 																<label>
-                                	Modelo: <input type="text" name="car" class="form-control" />
+                                	Modelo: <input type="text" name="car[]" class="form-control" />
                               	</label>
 																<label>
-                              	  Placa: <input type="text" name="plate" class="form-control" />
+                              	  Placa: <input type="text" name="plate[]" class="form-control" />
                               	</label>
 															</div>
 														</div>
@@ -79,9 +79,9 @@
 		(function() {
 			var btnAdd = $('#addCar');
 			var carListTemplate = [ '<div class="form-group form-inline">'
-				, '<label>Modelo: <input type="text" name="car" class="form-control" value="{{car}}" />'
+				, '<label>Modelo: <input type="text" name="car[]" class="form-control" />'
       	, '</label><label>'
-        , 'Placa: <input type="text" name="plate" class="form-control" value="{{plate}}" />'
+        , 'Placa: <input type="text" name="plate[]" class="form-control" />'
       	, '</label></div>' ].join('');
 
       btnAdd.click(function() {

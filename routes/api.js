@@ -87,30 +87,21 @@ module.exports = function() {
   	});
   });
 
-
-
 	router.get('/clients', function(req, res) {
 		if(!req.query.query) return res.send({ status: 1 });
-
 		var db = req.db;
 		var clients = db.get('clients');
-
 		clients.find({ client: new RegExp(req.query.query, 'i') }, [ '-phone', '-car' ], function(err, docs) {
 			if(err) throw err;
-
 			return res.send(docs);
 		});
 	});
 	router.get('/client', function(req, res) {
 		if(!req.query.query) return res.send({ status: 1 });
-
 		var db = req.db;
 		var clients = db.get('clients');
-
-		console.log(req.query.query);
 		clients.findOne({ _id: req.query.query }, function(err, doc) {
 			if(err) throw err;
-
 			return res.send(doc);
 		});
 	});

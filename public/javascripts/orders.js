@@ -17,9 +17,9 @@
     }
 
     var query = this.value;
-    $.ajax({
+    api.ajax({
       url: '/api/clients'
-      , type: 'GET'
+      , method: 'GET'
       , data: {
         query: query
       }
@@ -33,7 +33,12 @@
         for(var item in data) {
           if(!+item && +item != 0) continue;
           toRender.push(
-            [ '<a href="javascript:void(0)" data-client="', data[item]._id.toString(),'"', '">', data[item].client, '</a>' ].join('')
+            [
+              '<a href="javascript:void(0)" onclick="window.setClient(\''
+              , data[item]._id.toString()
+              , '\', this)">'
+              , data[item].client
+              , '</a>' ].join('')
           );
         }
         showResults.html(toRender.join('')).show();
@@ -42,19 +47,30 @@
     })
   };
 
-  window.setClient = function() {
-    //showResults.hide();
+  window.setClient = function(query, origin) {
+    showResults.hide();
+    var selectedName = origin.innerHTML;
+    showClient.val(selectedName);
 
-    console.log('pl');
-    var query = this.dataset.id;
-    $.ajax({
+    var carSelect = $('[name="car"]');
+    carSelect.html('<option value="">Carregando...</option>').attr('disabled', 'disabled');
+
+    api.ajax({
       url: '/api/client'
-      , type: 'GET'
+      , method: 'GET'
       , data: {
         query: query
       }
       , success: function(data) {
-        console.log(data);
+        if(!data.car) return false;
+        var toAppend = [];
+        for(var i in data.car) {
+          if(!+i && +i != 0) continue;
+          var car = data.car[i];
+          toAppend.push('<option value="'+ car.plate +'">'+ car.model +' ('+ car.plate +')</option>');
+        }
+
+        carSelect.html(toAppend).removeAttr('disabled');
       }
     });
 
@@ -65,6 +81,6 @@
     .focus(loadClients)
     .keyup(loadClients)
     .focusout(function() {
-      showResults.html('').hide();
+      //showResults.html('').hide();
     });
 })();

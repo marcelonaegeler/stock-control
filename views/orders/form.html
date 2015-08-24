@@ -14,22 +14,49 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                          <form action="/{{module}}/{% if order %}editar{% else %}novo{% endif %}" method="POST">
-                            <div class="form-group">
-                              <label>
-                                Cliente: <input type="text" class="form-control showClient" value="{{order.client}}" />
-                                <input type="hidden" name="client" value="{{order.client}}" />
-                                <span class="loadClients">
-                                  Carregando...
-                                </span>
-                              </label>
-                            </div>
+                          <div class="col-lg-12">
+                            <form action="/{{module}}/{% if order %}editar{% else %}novo{% endif %}" method="POST">
+                              <div class="form-group">
+                                <label>
+                                  Cliente: <input type="text" name="client" class="form-control showClient" value="{{order.client}}" />
+                                  {# <input type="hidden" name="client" value="{{order.client}}" /> #}
 
-                           	<div class="form-group">
-                              <input type="hidden" name="_id" value="{{order._id.toString()}}" />
-                              <button type="submit" class="btn btn-success">Salvar</button>
-                            </div>
-                          </form>
+                                  <span class="loadClients">
+                                    Carregando...
+                                  </span>
+
+                                </label>
+                              </div>
+
+                              <div class="form-group">
+                                <label>
+                                  Carro:
+                                  <select name="car" class="form-control" disabled>
+                                    <option value="">Escolha um cliente</option>
+                                  </select>
+                                </label>
+                              </div>
+
+                              <h3>Produtos: </h3>
+
+                              <div class="form-group">
+                                <a href="javascript:void(0);" class="btn btn-primary">Adicionar produto</a>
+                              </div>
+
+															<div class="form-group">
+																<label>
+																	Produto:
+																	<input type="text" name="product[]" class="form-control" />
+																</label>
+                              </div>
+
+
+                             	<div class="form-group">
+                                <input type="hidden" name="_id" value="{{order._id.toString()}}" />
+                                <button type="submit" class="btn btn-success">Salvar</button>
+                              </div>
+                            </form>
+                          </div>
                         </div>
                     </div>
                 </div>
@@ -42,5 +69,6 @@
     <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/vendor/metisMenu/dist/metisMenu.min.js"></script>
     <script src="/javascripts/sb-admin-2.js"></script>
+    <script src="/javascripts/api.js"></script>
     <script src="/javascripts/orders.js"></script>
 {% endblock %}

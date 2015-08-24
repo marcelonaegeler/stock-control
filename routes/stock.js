@@ -59,7 +59,7 @@ module.exports = function() {
 		});
 	});
 	router.get('/clientes/novo', function(req, res) {
-		return res.render('clients/form');
+		return res.render('clients/form', { module: 'clientes' });
 	});
 	router.get('/clientes/editar/:id', function(req, res) {
 		var _id = req.params.id;
