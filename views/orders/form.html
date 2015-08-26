@@ -18,13 +18,8 @@
                             <form action="/{{module}}/{% if order %}editar{% else %}novo{% endif %}" method="POST">
                               <div class="form-group">
                                 <label>
-                                  Cliente: <input type="text" name="client" class="form-control showClient" value="{{order.client}}" />
-                                  {# <input type="hidden" name="client" value="{{order.client}}" /> #}
-
-                                  <span class="loadClients">
-                                    Carregando...
-                                  </span>
-
+                                  Cliente: <input type="text" class="form-control live-search" value="{{order.client}}" data-callback="window.inputClientCallback" />
+                                  <input type="hidden" name="client" value="{{order.client}}" />
                                 </label>
                               </div>
 
@@ -46,7 +41,7 @@
 															<div class="form-group">
 																<label>
 																	Produto:
-																	<input type="text" name="product[]" class="form-control" />
+																	<input type="text" name="product[]" class="form-control live-search" data-callback="window.inputProductCallback" />
 																</label>
                               </div>
 
@@ -70,5 +65,6 @@
     <script src="/vendor/metisMenu/dist/metisMenu.min.js"></script>
     <script src="/javascripts/sb-admin-2.js"></script>
     <script src="/javascripts/api.js"></script>
+    <script src="/javascripts/live-search.js"></script>
     <script src="/javascripts/orders.js"></script>
 {% endblock %}

@@ -1,4 +1,5 @@
 (function() {
+  /*
   var showResults = $('.loadClients');
   var showClient = $('.showClient');
 
@@ -83,4 +84,8 @@
     .focusout(function() {
       //showResults.html('').hide();
     });
+
+  */
+  
+
 })();
