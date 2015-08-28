@@ -18,8 +18,13 @@
                             <form action="/{{module}}/{% if order %}editar{% else %}novo{% endif %}" method="POST">
                               <div class="form-group">
                                 <label>
-                                  Cliente: <input type="text" class="form-control live-search" value="{{order.client}}" data-callback="window.inputClientCallback" />
-                                  <input type="hidden" name="client" value="{{order.client}}" />
+                                  Cliente:
+                                  <select name="client" class="form-control">
+                                    <option value="">Escolha um cliente</option>
+                                    {% for client in clients %}
+                                      <option value="{{ client._id.toString() }}" {% if client === client._id.toString() %}selected{% endif %}>{{ client.client }}</option>
+                                    {% endfor %}
+                                  </select>
                                 </label>
                               </div>
 
@@ -65,6 +70,5 @@
     <script src="/vendor/metisMenu/dist/metisMenu.min.js"></script>
     <script src="/javascripts/sb-admin-2.js"></script>
     <script src="/javascripts/api.js"></script>
-    <script src="/javascripts/live-search.js"></script>
     <script src="/javascripts/orders.js"></script>
 {% endblock %}

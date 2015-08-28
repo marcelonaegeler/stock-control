@@ -1,7 +1,9 @@
 module.exports = function() {
+	"use strict";
 	var express = require('express')
 		, router = express.Router()
 		, clients = require('../controllers/clients')
+		, orders = require('../controllers/orders')
 		;
 
 	router.get('/login', function(req, res) {
@@ -44,7 +46,7 @@ module.exports = function() {
 	router.get('/clientes', clients.list);
 	router.get('/clientes/remove/:id', clients.removeClient);
 	router.get('/clientes/form/?:id?', clients.form);
-	
+
 	router.post('/clientes/novo', function(req, res) {
 		var clients = req.db.get('clients');
 		var dataSet = {};
@@ -52,7 +54,7 @@ module.exports = function() {
 		dataSet.phone = req.body.phone;
 		dataSet.car = [];
 
-		if(req.body.car && typeof req.body.car == 'object') {
+		if(req.body.car && typeof req.body.car === 'object') {
 			var car = req.body.car;
 			var plate = req.body.plate;
 			var carsLength = car.length;
@@ -78,7 +80,7 @@ module.exports = function() {
 		dataSet.phone = req.body.phone;
 		dataSet.car = [];
 
-		if(req.body.car && typeof req.body.car == 'object') {
+		if(req.body.car && typeof req.body.car === 'object') {
 			var car = req.body.car;
 			var plate = req.body.plate;
 			var carsLength = car.length;
@@ -95,15 +97,12 @@ module.exports = function() {
 	});
 
 
-	router.get('/pedidos/?', function(req, res) {
-		return res.render('orders/list', { module: 'pedidos' });
-	});
-	router.get('/pedidos/novo/?', function(req, res) {
-		return res.render('orders/form', { module: 'pedidos' });
-	});
-	router.get('/pedidos/editar/?', function(req, res) {
-		return res.render('orders/form', { module: 'pedidos' });
-	});
+	/*
+	* Orders
+	*/
+	router.get('/pedidos/?', orders.list);
+	router.get('/pedidos/novo/?', orders.form);
+	router.get('/pedidos/editar/?:id', orders.form);
 
   return router;
 };

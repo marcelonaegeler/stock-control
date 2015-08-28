@@ -1,0 +1,10 @@
+{
+  "undef": true,
+  "unused": true,
+  "laxcomma": true,
+  "strict": true,
+  "browser": true,
+  "node": true,
+  "devel": true,
+  "eqeqeq": true
+}

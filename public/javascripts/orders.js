@@ -1,91 +1,32 @@
 (function() {
-  /*
-  var showResults = $('.loadClients');
-  var showClient = $('.showClient');
+  "use strict";
+  /* globals $, api */
 
-  showResults.hide();
-
-  var refreshButtons = function() {
-    $('[data-client]').click(function() {
-      window.setClient();
-    });
-  };
-
-  var loadClients = function() {
-    if(!this.value) {
-      showResults.hide();
+  var clientSelect = $('[name="client"]')
+    , carSelect = $('[name="car"]');
+  clientSelect.change(function() {
+    var query = this.value;
+    if(!query) {
+      carSelect.html('<option value="">Escolha um cliente</option>').attr('disabled', 'disabled');
       return;
     }
 
-    var query = this.value;
-    api.ajax({
-      url: '/api/clients'
-      , method: 'GET'
-      , data: {
-        query: query
-      }
-      , success: function(data) {
-        if(!data.length) {
-          showResults.html('Sem resultados').show();
-          return;
-        }
-
-        var toRender = [];
-        for(var item in data) {
-          if(!+item && +item != 0) continue;
-          toRender.push(
-            [
-              '<a href="javascript:void(0)" onclick="window.setClient(\''
-              , data[item]._id.toString()
-              , '\', this)">'
-              , data[item].client
-              , '</a>' ].join('')
-          );
-        }
-        showResults.html(toRender.join('')).show();
-        refreshButtons();
-      }
-    })
-  };
-
-  window.setClient = function(query, origin) {
-    showResults.hide();
-    var selectedName = origin.innerHTML;
-    showClient.val(selectedName);
-
-    var carSelect = $('[name="car"]');
     carSelect.html('<option value="">Carregando...</option>').attr('disabled', 'disabled');
 
     api.ajax({
       url: '/api/client'
       , method: 'GET'
-      , data: {
-        query: query
-      }
+      , data: { query: query }
       , success: function(data) {
-        if(!data.car) return false;
-        var toAppend = [];
-        for(var i in data.car) {
-          if(!+i && +i != 0) continue;
-          var car = data.car[i];
-          toAppend.push('<option value="'+ car.plate +'">'+ car.model +' ('+ car.plate +')</option>');
+        console.log(data);
+        var carsLength = data.car.length;
+        var cars = [ '<option value="">Escolha um cliente</option>' ];
+        for(var i = 0; i < carsLength; i++) {
+          cars.push([ '<option value="', data.car[i].plate,'">', data.car[i].model,'</option>' ].join(''));
         }
 
-        carSelect.html(toAppend).removeAttr('disabled');
+        carSelect.html(cars.join('')).removeAttr('disabled');
       }
     });
-
-    return false;
-  };
-
-  showClient
-    .focus(loadClients)
-    .keyup(loadClients)
-    .focusout(function() {
-      //showResults.html('').hide();
-    });
-
-  */
-  
-
+  });
 })();
