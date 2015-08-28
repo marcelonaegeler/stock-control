@@ -47,6 +47,13 @@
                                 </tr>
                                 #}
                               {% endfor %}
+                              {% if !orders.length %}
+                                <tr>
+                                  <td colspan="4" class="text-center">
+                                    Não há pedidos.
+                                  </td>
+                                </tr>
+                              {% endif %}
                             </tbody>
                           </table>
                         </div>

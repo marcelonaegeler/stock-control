@@ -1,6 +1,8 @@
 module.exports = function() {
 	var express = require('express')
-		, router = express.Router();
+		, router = express.Router()
+		, clients = require('../controllers/clients')
+		;
 
 	router.get('/login', function(req, res) {
 		return res.render('login', { redirect: req.query.redirect });
@@ -28,53 +30,23 @@ module.exports = function() {
 	router.get('/usuarios', function(req, res) {
 		return res.render('users/list');
 	});
-	router.get('/usuarios/novo', function(req, res) {
-		return res.render('users/form');
-	});
-	router.get('/usuarios/editar/:id', function(req, res) {
+	router.get('/usuarios/form/?:id', function(req, res) {
 		var _id = req.params.id;
+		if(!_id) return res.render('users/form');
+
+		// Get user data and etc
 		return res.render('users/form');
 	});
 
 	/*
 	 * Clients
-	 * */
-	router.get('/clientes', function(req, res) {
-		var db = req.db;
-		var clients = db.get('clients');
-		clients.find({}, function(err, docs) {
-			if(err) throw err;
-			return res.render('clients/list', { module: 'clientes', clients: docs });
-		});
-	});
-	router.get('/clientes/remover/:id', function(req, res) {
-		var _id = req.params.id;
-		if(!_id) return res.redirect('/clientes');
-
-		var db = req.db;
-		var clients = db.get('clients');
-		clients.remove({ _id: _id }, function(err) {
-			if(err) throw err;
-			return res.redirect('/clientes');
-		});
-	});
-	router.get('/clientes/novo', function(req, res) {
-		return res.render('clients/form', { module: 'clientes' });
-	});
-	router.get('/clientes/editar/:id', function(req, res) {
-		var _id = req.params.id;
-		if(!_id) return res.redirect('/clientes');
-
-		var db = req.db;
-		var clients = db.get('clients');
-		clients.findOne({ _id: _id }, function(err, doc) {
-			if(err) throw err;
-			return res.render('clients/form', { module: 'clientes', client: doc });
-		});
-	});
+	 */
+	router.get('/clientes', clients.list);
+	router.get('/clientes/remove/:id', clients.removeClient);
+	router.get('/clientes/form/?:id?', clients.form);
+	
 	router.post('/clientes/novo', function(req, res) {
-		var db = req.db;
-		var clients = db.get('clients');
+		var clients = req.db.get('clients');
 		var dataSet = {};
 		dataSet.client = req.body.client;
 		dataSet.phone = req.body.phone;
