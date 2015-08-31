@@ -9,6 +9,7 @@
     "bootstrap": "~3.3.5",
     "metisMenu": "~2.0.3",
     "font-awesome": "~4.4.0",
-    "vanilla-masker": "~1.0.9"
+    "vanilla-masker": "~1.0.9",
+    "jquery-ui": "~1.11.4"
   }
 }

@@ -1,7 +1,20 @@
 (function() {
   "use strict";
-  /* globals $, api */
+  /* globals $ */
+  var client = $('[name="client"]');
 
+  client.autocomplete({
+    source: '/api/clients'
+    , query: 'query'
+    , focus: function(event, ui) {
+      client.val(ui.item.label);
+      return false;
+    }
+    , select: function(event, ui) {
+      client.val(ui.item.label);
+    }
+  });
+  /*
   var clientSelect = $('[name="client"]')
     , carSelect = $('[name="car"]');
   clientSelect.change(function() {
@@ -29,4 +42,5 @@
       }
     });
   });
+  */
 })();

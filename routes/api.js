@@ -1,4 +1,5 @@
 module.exports = function() {
+	"use strict";
 	var express = require('express')
 		, router = express.Router();
 
@@ -35,12 +36,12 @@ module.exports = function() {
   });
 
   router.post('/product/edit', function(req, res) {
-  	if(req.body.field == 'code'
-  		|| req.body.field == 'name'
-  		|| req.body.field == 'costPrice'
-  		|| req.body.field == 'sellPrice'
-  		|| req.body.field == 'stock') {
-  		var dataSet = {};
+		var dataSet = {};
+  	if(req.body.field === 'code'
+  		|| req.body.field === 'name'
+  		|| req.body.field === 'costPrice'
+  		|| req.body.field === 'sellPrice'
+  		|| req.body.field === 'stock') {
   		dataSet[req.body.field] = req.body.value;
   	} else {
   		return res.send({ status: 1 });
@@ -66,7 +67,7 @@ module.exports = function() {
   router.post('/stock/add', function(req, res) {
   	var db = req.db;
   	var products = db.get('products');
-  	products.update({ _id: req.body.id }, { $inc: { stock: +req.body.stock } }, function(err, docs) {
+  	products.update({ _id: req.body.id }, { $inc: { stock: +req.body.stock } }, function(err) {
   		if(err) throw err;
   	});
   	return res.send({ status: 0 });
@@ -88,11 +89,23 @@ module.exports = function() {
   });
 
 	router.get('/clients', function(req, res) {
-		if(!req.query.query) return res.send({ status: 1 });
+		if(!req.query.term) return res.send({ status: 1 });
 		var clients = req.db.get('clients');
-		clients.find({ client: new RegExp(req.query.query, 'i') }, [ '-phone', '-car' ], function(err, docs) {
+		clients.find({ client: new RegExp(req.query.term, 'i') }, [ '-phone', '-car' ], function(err, docs) {
 			if(err) throw err;
-			return res.send(docs);
+			var docsLength = docs.length;
+			var clientsDocs = [];
+			for(var i = 0; i < docsLength; i++) {
+				clientsDocs[i] = {
+					value: docs[i]._id
+					, label: docs[i].client
+				};
+				if((i+1) === docsLength) send();
+			}
+
+			function send() {
+				return res.send(clientsDocs);
+			}
 		});
 	});
 	router.get('/client', function(req, res) {
@@ -100,7 +113,7 @@ module.exports = function() {
 		var clients = req.db.get('clients');
 		clients.findOne({ _id: req.query.query }, function(err, doc) {
 			if(err) throw err;
-			return res.send(doc);
+			return res.send({ value: doc._id, label: doc.client });
 		});
 	});
 

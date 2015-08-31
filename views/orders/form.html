@@ -19,12 +19,15 @@
                               <div class="form-group">
                                 <label>
                                   Cliente:
+                                  {#
                                   <select name="client" class="form-control">
                                     <option value="">Escolha um cliente</option>
                                     {% for client in clients %}
                                       <option value="{{ client._id.toString() }}" {% if client === client._id.toString() %}selected{% endif %}>{{ client.client }}</option>
                                     {% endfor %}
                                   </select>
+                                  #}
+                                  <input name="client" type="text" class="form-control" autocomplete="true" />
                                 </label>
                               </div>
 
@@ -66,6 +69,7 @@
     </div>
 
     <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="/vendor/jquery-ui/jquery-ui.min.js"></script>
     <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/vendor/metisMenu/dist/metisMenu.min.js"></script>
     <script src="/javascripts/sb-admin-2.js"></script>
