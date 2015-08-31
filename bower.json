@@ -10,6 +10,7 @@
     "metisMenu": "~2.0.3",
     "font-awesome": "~4.4.0",
     "vanilla-masker": "~1.0.9",
-    "jquery-ui": "~1.11.4"
+    "jquery-ui": "~1.11.4",
+    "jquery-maskmoney": "~3.0.2"
   }
 }

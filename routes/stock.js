@@ -100,9 +100,10 @@ module.exports = function() {
 	/*
 	* Orders
 	*/
-	router.get('/pedidos/?', orders.list);
-	router.get('/pedidos/novo/?', orders.form);
-	router.get('/pedidos/editar/?:id', orders.form);
+	router.get('/pedidos/?', orders.list)
+		.get('/pedidos/form/?:id?', orders.form)
+		.post('/pedidos/form/?:id?', orders.postForm)
+		;
 
   return router;
 };

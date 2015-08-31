@@ -15,26 +15,19 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                           <div class="col-lg-12">
-                            <form action="/{{module}}/{% if order %}editar{% else %}novo{% endif %}" method="POST">
+                            <form action="/{{module}}/form" method="POST">
                               <div class="form-group">
                                 <label>
                                   Cliente:
-                                  {#
-                                  <select name="client" class="form-control">
-                                    <option value="">Escolha um cliente</option>
-                                    {% for client in clients %}
-                                      <option value="{{ client._id.toString() }}" {% if client === client._id.toString() %}selected{% endif %}>{{ client.client }}</option>
-                                    {% endfor %}
-                                  </select>
-                                  #}
-                                  <input name="client" type="text" class="form-control" autocomplete="true" />
+                                  <input name="clientLabel" type="text" class="form-control loadClient" value="{{order._id.toString()}}" required />
+                                  <input name="client" type="hidden" value="{{order._id.toString()}}" />
                                 </label>
                               </div>
 
                               <div class="form-group">
                                 <label>
                                   Carro:
-                                  <select name="car" class="form-control" disabled>
+                                  <select name="car" class="form-control" disabled required data-id="{{order.car}}">
                                     <option value="">Escolha um cliente</option>
                                   </select>
                                 </label>
@@ -43,15 +36,79 @@
                               <h3>Produtos: </h3>
 
                               <div class="form-group">
-                                <a href="javascript:void(0);" class="btn btn-primary">Adicionar produto</a>
+                                <button type="button" class="btn btn-primary addProduct">Adicionar produto</button>
                               </div>
 
-															<div class="form-group">
-																<label>
-																	Produto:
-																	<input type="text" name="product[]" class="form-control live-search" data-callback="window.inputProductCallback" />
-																</label>
-                              </div>
+                              <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th>Produto</th>
+                                    <th>Valor</th>
+                                    <th>Quantidade</th>
+                                    <th>Ação</th>
+                                  </tr>
+                                </thead>
+
+                                <tbody class="tableBody">
+                                  {% for product in order.products %}
+                                  <tr>
+                                    <td>
+                                      <input type="text" name="productLabel[]" class="form-control loadProduct" required value="{{product.name}}" />
+                                      <input type="hidden" name="product[]" value="{{product._id}}" />
+                                    </td>
+                                    <td>
+                                      <input type="text" name="priceLabel[]" class="form-control maskMoney" disabled value="{{parseFloat(product.price).toFixed(2).toString().replace('.', ',')}}" />
+                                      <input type="hidden" name="price[]" value="{{product.price}}" />
+                                    </td>
+                                    <td><input type="text" name="quantity[]" class="form-control" required value="{{product.quantity}}" /></td>
+                                    <td><button type="button" class="btn btn-danger rmProduct" disabled>Remover</button></td>
+                                  </tr>
+                                  {% endfor %}
+
+                                  {% if !order.products.length %}
+                                  <tr>
+                                    <td>
+                                      <input type="text" name="productLabel[]" class="form-control loadProduct" required />
+                                      <input type="hidden" name="product[]" />
+                                    </td>
+                                    <td>
+                                      <input type="text" name="priceLabel[]" class="form-control maskMoney" disabled />
+                                      <input type="hidden" name="price[]" />
+                                    </td>
+                                    <td><input type="text" name="quantity[]" class="form-control" required disabled /></td>
+                                    <td><button type="button" class="btn btn-danger rmProduct" disabled>Remover</button></td>
+                                  </tr>
+                                  {% endif %}
+                                </tbody>
+
+                                <tfoot>
+                                  <tr>
+                                    <td colspan="4">
+                                      <div class="col-md-3">
+                                        Subtotal:
+                                        <input type="text" name="subtotal" class="form-control" disabled value="{{parseFloat(order.price).toFixed(2).toString().replace('.', ',')}}" />
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td colspan="4">
+                                      <div class="col-md-3">
+                                        Desconto:
+                                        <input type="text" name="discount" class="form-control maskMoney" value="{{parseFloat(order.discount).toFixed(2).toString().replace('.', ',')}}" />
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td colspan="4">
+                                      <div class="col-md-3">
+                                        Total:
+                                        <input type="text" name="total" class="form-control" disabled value="{{parseFloat(order.price - order.discount).toFixed(2).toString().replace('.', ',')}}" />
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tfoot>
+                              </table>
+
 
 
                              	<div class="form-group">
@@ -68,8 +125,10 @@
         </div>
     </div>
 
+    <link rel="stylesheet" href="/vendor/jquery-ui/themes/base/jquery-ui.min.css">
     <script src="/vendor/jquery/dist/jquery.min.js"></script>
     <script src="/vendor/jquery-ui/jquery-ui.min.js"></script>
+    <script src="/vendor/jquery-maskmoney/dist/jquery.maskMoney.min.js"></script>
     <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/vendor/metisMenu/dist/metisMenu.min.js"></script>
     <script src="/javascripts/sb-admin-2.js"></script>

@@ -1,23 +1,19 @@
 module.exports = function() {
 	"use strict";
 	var express = require('express')
-		, router = express.Router();
+		, router = express.Router()
+		, clients = require('../controllers/clients')
+		, products = require('../controllers/products')
+		;
 
   /*
    * API Ajax calls
    * */
-  router.get('/products', function(req, res) {
-  	var db = req.db;
-  	var products = db.get('products');
-  	products.find({}, function(err, docs) {
-  		if(err) throw err;
-  		return res.send(docs);
-  	});
-  });
+  router.get('/products', products.list);
+	router.get('/search/products', products.search);
 
   router.post('/product/new', function(req, res) {
-  	var db = req.db;
-  	var products = db.get('products');
+  	var products = req.db.get('products');
 
   	if(!req.body.name || !req.body.code) return res.send({ status: 1 });
 
@@ -88,17 +84,20 @@ module.exports = function() {
   	});
   });
 
-	router.get('/clients', function(req, res) {
+	router.get('/search/clients', function(req, res) {
 		if(!req.query.term) return res.send({ status: 1 });
 		var clients = req.db.get('clients');
-		clients.find({ client: new RegExp(req.query.term, 'i') }, [ '-phone', '-car' ], function(err, docs) {
+		clients.find({ client: new RegExp(req.query.term, 'i') }, [ '-phone' ], function(err, docs) {
 			if(err) throw err;
+			//return res.send(docs);
+
 			var docsLength = docs.length;
 			var clientsDocs = [];
 			for(var i = 0; i < docsLength; i++) {
 				clientsDocs[i] = {
-					value: docs[i]._id
+					_id: docs[i]._id
 					, label: docs[i].client
+					, car: docs[i].car
 				};
 				if((i+1) === docsLength) send();
 			}
@@ -106,16 +105,11 @@ module.exports = function() {
 			function send() {
 				return res.send(clientsDocs);
 			}
+
 		});
 	});
-	router.get('/client', function(req, res) {
-		if(!req.query.query) return res.send({ status: 1 });
-		var clients = req.db.get('clients');
-		clients.findOne({ _id: req.query.query }, function(err, doc) {
-			if(err) throw err;
-			return res.send({ value: doc._id, label: doc.client });
-		});
-	});
+
+	router.get('/client', clients.getInfo);
 
   return router;
 };
