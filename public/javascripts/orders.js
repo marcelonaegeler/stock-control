@@ -24,7 +24,7 @@
 
       return false;
     }
-  }).data('autocomplete')._trigger('select');
+  });
 
   var addProduct = (function() {
     var body = $('.tableBody');

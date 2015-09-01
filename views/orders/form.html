@@ -15,20 +15,24 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                           <div class="col-lg-12">
-                            <form action="/{{module}}/form" method="POST">
+                            <form action="{{ [ '', module, 'form', order._id.toString() ].join('/') }}" method="POST">
                               <div class="form-group">
                                 <label>
                                   Cliente:
-                                  <input name="clientLabel" type="text" class="form-control loadClient" value="{{order._id.toString()}}" required />
-                                  <input name="client" type="hidden" value="{{order._id.toString()}}" />
+                                  <input name="clientLabel" type="text" class="form-control loadClient" value="{{order.clientInfo.client}}" required />
+                                  <input name="client" type="hidden" value="{{order.client}}" />
                                 </label>
                               </div>
 
                               <div class="form-group">
                                 <label>
                                   Carro:
-                                  <select name="car" class="form-control" disabled required data-id="{{order.car}}">
-                                    <option value="">Escolha um cliente</option>
+                                  <select name="car" class="form-control" required>
+                                    <option value="">Escolha um carro</option>
+                                    {% for car in order.clientInfo.car %}
+                                    {{order.car == car.plate}}
+                                      <option value="{{car.plate}}"{% if car.plate == order.car %}selected="selected"{% endif %}>{{car.model}}</option>
+                                    {% endfor %}
                                   </select>
                                 </label>
                               </div>
@@ -112,6 +116,7 @@
 
 
                              	<div class="form-group">
+                                <input type="hidden" name="orderNumber" value="{{order.orderNumber}}" />
                                 <input type="hidden" name="_id" value="{{order._id.toString()}}" />
                                 <button type="submit" class="btn btn-success">Salvar</button>
                               </div>

@@ -102,6 +102,7 @@ module.exports = function() {
 	*/
 	router.get('/pedidos/?', orders.list)
 		.get('/pedidos/form/?:id?', orders.form)
+		.get('/pedidos/remove/?:id?', orders.remove)
 		.post('/pedidos/form/?:id?', orders.postForm)
 		;
 

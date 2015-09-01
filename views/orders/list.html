@@ -34,9 +34,9 @@
                               {% for order in orders %}
 
                                 <tr>
-                                  <td>{{order.number}}</td>
+                                  <td>{{order.orderNumber}}</td>
                                   <td>
-                                    {{order.date.getDate()}}/{% if order.date.getMonth() < 11 %}0{% endif %}{{ order.date.getMonth() + 1 }}/{{order.date.getFullYear()}}
+                                    {% if order.date.getDate() < 10 %}0{% endif %}{{order.date.getDate()}}/{% if order.date.getMonth() < 11 %}0{% endif %}{{ order.date.getMonth() + 1 }}/{{order.date.getFullYear()}}
                                   </td>
                                   <td>{{order.car}}</td>
                                   <td>R$ {{parseFloat(order.price - order.discount).toFixed(2).toString().replace('.', ',')}}</td>
