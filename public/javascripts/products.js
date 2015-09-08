@@ -92,7 +92,7 @@
 					<EditableCell update={this.props.update} prop={this.props.product.sellPrice} propName="sellPrice" productId={this.props.product._id} currencyField="true" />
 					<td>
 						<input type="hidden" ref="_id" value={this.props.product._id} />
-						<button type="button" onClick={this.rmItem}>Remover</button>
+						<button type="button" onClick={this.rmItem} className="btn btn-danger"><i className="fa fa-close"></i> Remover</button>
 					</td>
 				</tr>
 			);

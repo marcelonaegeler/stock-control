@@ -6,13 +6,10 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Clientes</h1>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-12">
-                    <a href="/{{module}}/form" class="btn btn-primary">Cadastrar</a>
+                  <h1 class="page-header row">
+                    <div class="col-md-8">Clientes</div>
+                    <div class="col-md-4 text-right"><a href="/{{module}}/form" class="btn btn-primary">Cadastrar</a></div>
+                  </h1>
                 </div>
             </div>
 
@@ -32,13 +29,13 @@
                             <tbody>
                               {% for client in clients %}
                                 <tr>
-                                  <td>{{client.client}}</td>
-                                  <td>{{client.phone}}</td>
-                                  <td>
+                                  <td><span class="textAlign field-label">{{client.client}}</span></td>
+                                  <td><span class="textAlign field-label">{{client.phone}}</span></td>
+                                  <td><span class="textAlign field-label">
                                     {% for car in client.car %}
-                                      {{car.plate}}
+                                      {{car.plate}}{% if !loop.last %},{% endif %}
                                     {% endfor %}
-                                  </td>
+                                  </span></td>
                                   <td>
                                     <a href="/{{module}}/form/{{client._id.toString()}}" class="btn btn-primary"><i class="fa fa-edit"></i> Editar</a>
                                     <a href="/{{module}}/remove/{{client._id.toString()}}" class="btn btn-danger btn-remove"><i class="fa fa-close"></i> Remover</a>

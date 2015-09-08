@@ -46,6 +46,7 @@ module.exports = (function() {
     orders.findOne({ _id: _id }, function(err, doc) {
       if(err) throw err;
       var render = _.after(2, function() {
+        console.log(doc);
         return res.render('orders/form', { module: module, order: doc });
       });
 
@@ -78,6 +79,7 @@ module.exports = (function() {
     var data = {
       client: req.body.client
       , car: req.body.car
+      , orderNumber: +req.body.orderNumber
       , discount: +req.body.discount.replace(',', '.')
       , products: []
       , price: 0
@@ -87,7 +89,6 @@ module.exports = (function() {
     var products = req.body.product;
     var prices = req.body.price;
     var quantities = req.body.quantity;
-    var orderNumber = req.body.orderNumber;
     var productsLength = products.length;
 
     for(var i = 0; i < productsLength; i++) {

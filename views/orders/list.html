@@ -6,13 +6,10 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Pedidos</h1>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-12">
-                    <a href="/{{module}}/form" class="btn btn-primary">Cadastrar</a>
+                    <h1 class="page-header row">
+                      <div class="col-md-8">Pedidos</div>
+                      <div class="col-md-4 text-right"><a href="/{{module}}/form" class="btn btn-primary">Cadastrar</a></div>
+                    </h1>
                 </div>
             </div>
 
@@ -34,12 +31,12 @@
                               {% for order in orders %}
 
                                 <tr>
-                                  <td>{{order.orderNumber}}</td>
-                                  <td>
+                                  <td><span class="field-label textAlign">{{order.orderNumber}}</span></td>
+                                  <td><span class="field-label textAlign">
                                     {% if order.date.getDate() < 10 %}0{% endif %}{{order.date.getDate()}}/{% if order.date.getMonth() < 11 %}0{% endif %}{{ order.date.getMonth() + 1 }}/{{order.date.getFullYear()}}
-                                  </td>
-                                  <td>{{order.car}}</td>
-                                  <td>R$ {{parseFloat(order.price - order.discount).toFixed(2).toString().replace('.', ',')}}</td>
+                                  </span></td>
+                                  <td><span class="field-label textAlign">{{order.car}}</span></td>
+                                  <td><span class="field-label textAlign">R$ {{parseFloat(order.price - order.discount).toFixed(2).toString().replace('.', ',')}}</span></td>
 
                                   <td>
                                     <a href="/{{module}}/form/{{order._id.toString()}}" class="btn btn-primary"><i class="fa fa-edit"></i> Editar</a>
