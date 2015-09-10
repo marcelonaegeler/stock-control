@@ -7,8 +7,8 @@
             <div class="row">
                 <div class="col-lg-12">
                   <h1 class="page-header row">
-                    <div class="col-md-8">Clientes</div>
-                    <div class="col-md-4 text-right"><a href="/{{module}}" class="btn btn-primary">Ver todos</a></div>
+                    <div class="col-xs-9">Clientes</div>
+                    <div class="col-xs-3 text-right"><a href="/{{module}}" class="btn btn-primary"><i class="fa fa-chevron-left visible-xs"></i><span class="hidden-xs">Ver todos</span></a></div>
                   </h1>
                 </div>
             </div>
@@ -18,50 +18,56 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                           <form action="/{{module}}/{% if client %}editar{% else %}novo{%endif%}" method="POST">
-                            <div class="form-group">
-                              <label>
-                                Cliente: <input type="text" name="client" class="form-control" value="{{client.client}}" />
-                              </label>
-                            </div>
-														<div class="form-group">
-                              <label>
-                                Telefone: <input type="text" name="phone" class="form-control" value="{{client.phone}}" />
-                              </label>
+                            <div class="row">
+                              <div class="form-group col-md-6">
+                                <label>Cliente:</label>
+                                <input type="text" name="client" class="form-control" value="{{client.client}}" />
+                              </div>
+  														<div class="form-group col-md-6">
+                                <label>Telefone:</label>
+                                <input type="text" name="phone" class="form-control" value="{{client.phone}}" />
+                              </div>
                             </div>
 
 														<hr />
 
-														<h3>Veículos</h3>
-														<a href="#" id="addCar">Adicionar</a>
+                            <div class="row">
+                              <div class="col-xs-8 col-sm-9">
+														    <h3 class="subtitle">Veículos</h3>
+                              </div>
+                              <div class="col-xs-4 col-sm-3 text-right">
+														    <a href="javascript:void(0)" id="addCar" class="btn btn-primary"><i class="fa fa-plus visible-xs"></i><span class="hidden-xs">Adicionar</span></a>
+                              </div>
+                            </div>
 
 
 														{% for car in client.car %}
-                            <div class="list-cars">
-															<div class="form-group form-inline">
-																<label>
-                                	Modelo: <input type="text" name="car[]" class="form-control" value="{{car.model}}" />
-                              	</label>
-																<label>
-                              	  Placa: <input type="text" name="plate[]" class="form-control" value="{{car.plate}}" />
-                              	</label>
-															</div>
-														</div>
+                              <div class="list-cars row">
+                                <div class="form-group col-sm-6">
+                                  <label>Modelo:</label>
+                                  <input type="text" name="car[]" class="form-control" value="{{car.model}}" />
+  															</div>
+                                <div class="form-group col-sm-6">
+                                	<label>Placa:</label>
+                                	 <input type="text" name="plate[]" class="form-control" value="{{car.plate}}" />
+  															</div>
+  														</div>
                             {% endfor %}
 
                             {% if !client.car.length %}
-                            <div class="list-cars">
-															<div class="form-group form-inline">
-																<label>
-                                	Modelo: <input type="text" name="car[]" class="form-control" />
-                              	</label>
-																<label>
-                              	  Placa: <input type="text" name="plate[]" class="form-control" />
-                              	</label>
-															</div>
-														</div>
+                              <div class="list-cars row">
+                                <div class="form-group col-sm-6">
+                                  <label>Modelo:</label>
+                                  <input type="text" name="car[]" class="form-control" />
+                                </div>
+                                <div class="form-group col-sm-6">
+                                  <label>Placa:</label>
+                                  <input type="text" name="plate[]" class="form-control" />
+  															</div>
+  														</div>
                             {% endif %}
 
-                           	<div class="form-group">
+                           	<div class="form-footer text-center">
                               <input type="hidden" name="_id" value="{{client._id.toString()}}" />
                               <button type="submit" class="btn btn-success">Salvar</button>
                             </div>
@@ -81,11 +87,12 @@
 		<script>
 		(function() {
 			var btnAdd = $('#addCar');
-			var carListTemplate = [ '<div class="form-group form-inline">'
-				, '<label>Modelo: <input type="text" name="car[]" class="form-control" />'
-      	, '</label><label>'
-        , 'Placa: <input type="text" name="plate[]" class="form-control" />'
-      	, '</label></div>' ].join('');
+			var carListTemplate = [
+          '<div class="form-group col-sm-6">'
+				, '<label>Modelo:</label><input type="text" name="car[]" class="form-control" />'
+      	, '</div><div class="form-group col-sm-6">'
+        , '<label>Placa:</label> <input type="text" name="plate[]" class="form-control" />'
+      	, '</div>' ].join('');
 
       btnAdd.click(function() {
 				$('.list-cars').append(carListTemplate);

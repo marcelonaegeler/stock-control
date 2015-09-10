@@ -48,7 +48,7 @@
 
 			return (
 				<div className="row">
-          <div className="col-sm-12">
+          			<div className="col-sm-12">
 						<div className="table-responsive">
 							<table className="table editable" cellPadding="0" cellSpacing="0">
 								<thead>
@@ -90,7 +90,7 @@
 					<EditableCell update={this.props.update} prop={this.props.product.name} propName="name" productId={this.props.product._id} />
 					<EditableCell update={this.props.update} prop={this.props.product.costPrice} propName="costPrice" productId={this.props.product._id} currencyField="true" />
 					<EditableCell update={this.props.update} prop={this.props.product.sellPrice} propName="sellPrice" productId={this.props.product._id} currencyField="true" />
-					<td>
+					<td className="nowrap">
 						<input type="hidden" ref="_id" value={this.props.product._id} />
 						<button type="button" onClick={this.rmItem} className="btn btn-danger"><i className="fa fa-close"></i> Remover</button>
 					</td>
@@ -180,10 +180,7 @@
 		, render: function() {
 			return (
 				<div className="dataTables_filter form-inline">
-					<label>
-						Pesquisar:
-						<input type="text" placeholder="Digite aqui..." className="form-control" ref="searchInput" value={this.props.search} onChange={this.changeHandler} />
-					</label>
+					<input type="text" placeholder="Pesquisar..." className="form-control" ref="searchInput" value={this.props.search} onChange={this.changeHandler} />
 				</div>
 			);
 		}
@@ -227,30 +224,35 @@
 		}
 		, render: function() {
 			return (
-				<form onSubmit={this.submitHandler} style={{padding: '0 20px'}}>
-					<div className="form-group">
-						<label htmlFor="code" className="form-label">Código:</label>
-						<input id="code" type="text" className="form-control" ref="code" />
+				<form onSubmit={this.submitHandler}>
+					<div className="row">
+						<div className="form-group col-sm-4">
+							<label htmlFor="code" className="form-label">Código:</label>
+							<input id="code" type="text" className="form-control" ref="code" />
+						</div>
+						<div className="form-group col-sm-8">
+							<label htmlFor="name" className="form-label">Produto:</label>
+							<input id="name" type="text" className="form-control" ref="name" />
+						</div>
 					</div>
-					<div className="form-group">
-						<label htmlFor="name" className="form-label">Produto:</label>
-						<input id="name" type="text" className="form-control" ref="name" />
-					</div>
-					<div className="form-group">
-						<label htmlFor="costPrice" className="form-label">Preço de custo (R$):</label>
-						<MoneyInput id="costPrice" ref="costPrice" />
-					</div>
-					<div className="form-group">
-						<label htmlFor="sellPrice" className="form-label">Preço de venda (R$):</label>
-						<MoneyInput id="sellPrice" ref="sellPrice" />
+					<div className="row">
+						<div className="form-group col-sm-6">
+							<label htmlFor="costPrice" className="form-label">Preço de custo (R$):</label>
+							<MoneyInput id="costPrice" ref="costPrice" />
+						</div>
+						<div className="form-group col-sm-6">
+							<label htmlFor="sellPrice" className="form-label">Preço de venda (R$):</label>
+							<MoneyInput id="sellPrice" ref="sellPrice" />
+						</div>
 					</div>
 					<div className="form-group">
 						<label htmlFor="stock" className="form-label">Estoque:</label>
 						<input id="stock" type="text" className="form-control" ref="stock" />
 					</div>
-
-					<button type="submit" className="btn btn-primary">Cadastrar</button>
-      	</form>
+					<div className="form-footer text-center">
+						<button type="submit" className="btn btn-primary">Cadastrar</button>
+					</div>
+      			</form>
 			);
 		}
 	});
@@ -296,13 +298,8 @@
 							</div>
 						</div>
 					</div>
-					<div className="row">
-						<div className="col-sm-6">
-							<SearchBar search={this.state.search} changeHandler={this.searchHandler} />
-						</div>
-						<div className="col-sm-6">
-
-						</div>
+					<div className="search-content">
+						<SearchBar search={this.state.search} changeHandler={this.searchHandler} />
 					</div>
 					<EditableTable products={this.state.products} columns={this.props.columns} search={this.state.search} update={this.getContent} order={this.order} />
 				</div>

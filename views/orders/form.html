@@ -7,8 +7,8 @@
             <div class="row">
                 <div class="col-lg-12">
                   <h1 class="page-header row">
-                    <div class="col-md-8">Pedidos</div>
-                    <div class="col-md-4 text-right"><a href="/{{module}}" class="btn btn-primary">Ver todos</a></div>
+                    <div class="col-xs-8">Pedidos</div>
+                    <div class="col-xs-4 text-right"><a href="/{{module}}" class="btn btn-primary"><i class="fa fa-chevron-left visible-xs"></i><span class="hidden-xs">Ver todos</span></a></div>
                   </h1>
                 </div>
             </div>
@@ -17,114 +17,101 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                          <div class="col-lg-12">
                             <form action="{{ [ '', module, 'form', order._id.toString() ].join('/') }}" method="POST">
                               <div class="form-group">
-                                <label>
-                                  Cliente:
-                                  <input name="clientLabel" type="text" class="form-control loadClient" value="{{order.clientInfo.client}}" required />
-                                  <input name="client" type="hidden" value="{{order.client}}" />
-                                </label>
+                                <label>Cliente:</label>
+                                <input name="clientLabel" type="text" class="form-control loadClient" value="{{order.clientInfo.client}}" required />
+                                <input name="client" type="hidden" value="{{order.client}}" />
                               </div>
 
                               <div class="form-group">
-                                <label>
-                                  Carro:
-                                  <select name="car" class="form-control" required>
-                                    <option value="">Escolha um carro</option>
-                                    {% for car in order.clientInfo.car %}
-                                    {{order.car == car.plate}}
-                                      <option value="{{car.plate}}"{% if car.plate == order.car %}selected="selected"{% endif %}>{{car.model}}</option>
-                                    {% endfor %}
-                                  </select>
-                                </label>
-                              </div>
-
-                              <h3>Produtos: </h3>
-
-                              <div class="form-group">
-                                <button type="button" class="btn btn-primary addProduct">Adicionar produto</button>
-                              </div>
-
-                              <table class="table">
-                                <thead>
-                                  <tr>
-                                    <th>Produto</th>
-                                    <th>Valor</th>
-                                    <th>Quantidade</th>
-                                    <th>Ação</th>
-                                  </tr>
-                                </thead>
-
-                                <tbody class="tableBody">
-                                  {% for product in order.products %}
-                                  <tr>
-                                    <td>
-                                      <input type="text" name="productLabel[]" class="form-control loadProduct" required value="{{product.name}}" />
-                                      <input type="hidden" name="product[]" value="{{product._id}}" />
-                                    </td>
-                                    <td>
-                                      <input type="text" name="priceLabel[]" class="form-control maskMoney" disabled value="{{parseFloat(product.price).toFixed(2).toString().replace('.', ',')}}" />
-                                      <input type="hidden" name="price[]" value="{{product.price}}" />
-                                    </td>
-                                    <td><input type="text" name="quantity[]" class="form-control" required value="{{product.quantity}}" /></td>
-                                    <td><button type="button" class="btn btn-danger rmProduct" disabled>Remover</button></td>
-                                  </tr>
+                                <label>Carro:</label>
+                                <select name="car" class="form-control" required>
+                                  <option value="">Escolha um carro</option>
+                                  {% for car in order.clientInfo.car %}
+                                  {{order.car == car.plate}}
+                                    <option value="{{car.plate}}"{% if car.plate == order.car %}selected="selected"{% endif %}>{{car.model}}</option>
                                   {% endfor %}
+                                </select>
+                              </div>
 
-                                  {% if !order.products.length %}
-                                  <tr>
-                                    <td>
-                                      <input type="text" name="productLabel[]" class="form-control loadProduct" required />
-                                      <input type="hidden" name="product[]" />
-                                    </td>
-                                    <td>
-                                      <input type="text" name="priceLabel[]" class="form-control maskMoney" disabled />
-                                      <input type="hidden" name="price[]" />
-                                    </td>
-                                    <td><input type="text" name="quantity[]" class="form-control" required disabled /></td>
-                                    <td><button type="button" class="btn btn-danger rmProduct" disabled>Remover</button></td>
-                                  </tr>
-                                  {% endif %}
-                                </tbody>
+                              <hr />
 
-                                <tfoot>
-                                  <tr>
-                                    <td colspan="4">
-                                      <div class="col-md-3">
-                                        Subtotal:
-                                        <input type="text" name="subtotal" class="form-control" disabled value="{{parseFloat(order.price).toFixed(2).toString().replace('.', ',')}}" />
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td colspan="4">
-                                      <div class="col-md-3">
-                                        Desconto:
-                                        <input type="text" name="discount" class="form-control maskMoney" value="{{parseFloat(order.discount).toFixed(2).toString().replace('.', ',')}}" />
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td colspan="4">
-                                      <div class="col-md-3">
-                                        Total:
-                                        <input type="text" name="total" class="form-control" disabled value="{{parseFloat(order.price - order.discount).toFixed(2).toString().replace('.', ',')}}" />
-                                      </div>
-                                    </td>
-                                  </tr>
-                                </tfoot>
-                              </table>
+                              <div class="row">
+                                <div class="col-xs-8 col-sm-7 col-md-8">
+                                  <h3 class="subtitle">Produtos:</h3>
+                                </div>
+                                <div class="col-xs-4 col-sm-5 col-md-4 text-right">
+                                  <button type="button" class="btn btn-primary addProduct"><i class="fa fa-plus visible-xs"></i><span class="hidden-xs">Adicionar produto</span></button>
+                                </div>
+                              </div>                        
 
+                              <div class="table-responsive table-order">
+                                <table class="table">
+                                  <thead>
+                                    <tr>
+                                      <th>Produto</th>
+                                      <th>Valor</th>
+                                      <th>Quantidade</th>
+                                      <th>Ação</th>
+                                    </tr>
+                                  </thead>
 
+                                  <tbody class="tableBody">
+                                    {% for product in order.products %}
+                                    <tr>
+                                      <td>
+                                        <input type="text" name="productLabel[]" class="form-control loadProduct" required value="{{product.name}}" />
+                                        <input type="hidden" name="product[]" value="{{product._id}}" />
+                                      </td>
+                                      <td>
+                                        <input type="text" name="priceLabel[]" class="form-control maskMoney" disabled value="{{parseFloat(product.price).toFixed(2).toString().replace('.', ',')}}" />
+                                        <input type="hidden" name="price[]" value="{{product.price}}" />
+                                      </td>
+                                      <td><input type="text" name="quantity[]" class="form-control" required value="{{product.quantity}}" /></td>
+                                      <td class="nowrap"><button type="button" class="btn btn-danger rmProduct" disabled>Remover</button></td>
+                                    </tr>
+                                    {% endfor %}
 
-                             	<div class="form-group">
+                                    {% if !order.products.length %}
+                                    <tr>
+                                      <td>
+                                        <input type="text" name="productLabel[]" class="form-control loadProduct" required />
+                                        <input type="hidden" name="product[]" />
+                                      </td>
+                                      <td>
+                                        <input type="text" name="priceLabel[]" class="form-control maskMoney" disabled />
+                                        <input type="hidden" name="price[]" />
+                                      </td>
+                                      <td><input type="text" name="quantity[]" class="form-control" required disabled /></td>
+                                      <td class="nowrap"><button type="button" class="btn btn-danger rmProduct" disabled>Remover</button></td>
+                                    </tr>
+                                    {% endif %}
+                                  </tbody>
+                                </table>
+                              </div>
+
+                              <div class="row">
+                                <div class="form-group col-sm-4">
+                                  <label>Subtotal:</label>
+                                  <input type="text" name="subtotal" class="form-control" disabled value="{{parseFloat(order.price).toFixed(2).toString().replace('.', ',')}}" />
+                                </div>
+                                <div class="form-group col-sm-4">
+                                  <label>Desconto:</label>
+                                  <input type="text" name="discount" class="form-control maskMoney" value="{{parseFloat(order.discount).toFixed(2).toString().replace('.', ',')}}" />
+                                </div>
+                                <div class="form-group col-sm-4">
+                                  <label>Total:</label>
+                                  <input type="text" name="total" class="form-control" disabled value="{{parseFloat(order.price - order.discount).toFixed(2).toString().replace('.', ',')}}" />
+                                </div>
+                              </div>
+
+                             	<div class="form-footer text-center">
                                 <input type="hidden" name="orderNumber" value="{{order.orderNumber}}" />
                                 <input type="hidden" name="_id" value="{{order._id.toString()}}" />
                                 <button type="submit" class="btn btn-success">Salvar</button>
                               </div>
                             </form>
-                          </div>
                         </div>
                     </div>
                 </div>

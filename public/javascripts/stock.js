@@ -145,10 +145,7 @@
 		, render: function() {
 			return (
 				<div className="dataTables_filter form-inline">
-					<label>
-						Pesquisar:
-						<input type="text" placeholder="Digite aqui..." className="form-control" ref="searchInput" value={this.props.search} onChange={this.changeHandler} />
-					</label>
+					<input type="text" placeholder="Pesquisar..." className="form-control" ref="searchInput" value={this.props.search} onChange={this.changeHandler} />
 				</div>
 			);
 		}
@@ -188,14 +185,8 @@
 		, render: function() {
 			return (
 				<div>
-					<div className="row">
-						<div className="col-sm-6">
-							<SearchBar search={this.state.search} changeHandler={this.searchHandler} />
-						</div>
-						<div className="col-sm-6">
-
-						</div>
-					</div>
+					<SearchBar search={this.state.search} changeHandler={this.searchHandler} />
+						
 					<EditableTable products={this.state.products} columns={this.props.columns} search={this.state.search} update={this.getContent} order={this.order} />
 				</div>
 			);

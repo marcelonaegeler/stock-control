@@ -7,8 +7,8 @@
             <div class="row">
                 <div class="col-lg-12">
                   <h1 class="page-header row">
-                    <div class="col-md-8">Clientes</div>
-                    <div class="col-md-4 text-right"><a href="/{{module}}/form" class="btn btn-primary">Cadastrar</a></div>
+                    <div class="col-xs-8">Clientes</div>
+                    <div class="col-xs-4 text-right"><a href="/{{module}}/form" class="btn btn-primary"><i class="fa fa-plus visible-xs"></i><span class="hidden-xs">Cadastrar</span></a></div>
                   </h1>
                 </div>
             </div>
@@ -17,33 +17,35 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                          <table class="table">
-                            <thead>
-                              <tr>
-                                <th>Cliente</th>
-                                <th>Telefone</th>
-                                <th>Carros</th>
-                                <th>Ações</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {% for client in clients %}
-                                <tr>
-                                  <td><span class="textAlign field-label">{{client.client}}</span></td>
-                                  <td><span class="textAlign field-label">{{client.phone}}</span></td>
-                                  <td><span class="textAlign field-label">
-                                    {% for car in client.car %}
-                                      {{car.plate}}{% if !loop.last %},{% endif %}
-                                    {% endfor %}
-                                  </span></td>
-                                  <td>
-                                    <a href="/{{module}}/form/{{client._id.toString()}}" class="btn btn-primary"><i class="fa fa-edit"></i> Editar</a>
-                                    <a href="/{{module}}/remove/{{client._id.toString()}}" class="btn btn-danger btn-remove"><i class="fa fa-close"></i> Remover</a>
-                                  </td>
-                                </tr>
-                              {% endfor %}
-                            </tbody>
-                          </table>
+                          <div class="table-responsive">
+                              <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th>Cliente</th>
+                                    <th>Telefone</th>
+                                    <th>Carros</th>
+                                    <th>Ações</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {% for client in clients %}
+                                    <tr>
+                                      <td><span class="textAlign field-label">{{client.client}}</span></td>
+                                      <td><span class="textAlign field-label">{{client.phone}}</span></td>
+                                      <td><span class="textAlign field-label">
+                                        {% for car in client.car %}
+                                          {{car.plate}}{% if !loop.last %},{% endif %}
+                                        {% endfor %}
+                                      </span></td>
+                                      <td class="nowrap">
+                                        <a href="/{{module}}/form/{{client._id.toString()}}" class="btn btn-primary"><i class="fa fa-edit"></i> Editar</a>
+                                        <a href="/{{module}}/remove/{{client._id.toString()}}" class="btn btn-danger btn-remove"><i class="fa fa-close"></i> Remover</a>
+                                      </td>
+                                    </tr>
+                                  {% endfor %}
+                                </tbody>
+                              </table>
+                            </div>
                         </div>
                     </div>
                 </div>

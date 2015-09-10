@@ -7,8 +7,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header row">
-                      <div class="col-md-8">Pedidos</div>
-                      <div class="col-md-4 text-right"><a href="/{{module}}/form" class="btn btn-primary">Cadastrar</a></div>
+                      <div class="col-xs-8">Pedidos</div>
+                      <div class="col-xs-4 text-right"><a href="/{{module}}/form" class="btn btn-primary"><i class="fa fa-plus visible-xs"></i><span class="hidden-xs">Cadastrar</span></a></div>
                     </h1>
                 </div>
             </div>
@@ -17,43 +17,45 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                          <table class="table">
-                            <thead>
-                              <tr>
-                                <th>Pedido</th>
-                                <th>Data</th>
-                                <th>Placa</th>
-                                <th>Valor</th>
-                                <th>Ações</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {% for order in orders %}
-
+                          <div class="table-responsive">
+                            <table class="table">
+                              <thead>
                                 <tr>
-                                  <td><span class="field-label textAlign">{{order.orderNumber}}</span></td>
-                                  <td><span class="field-label textAlign">
-                                    {% if order.date.getDate() < 10 %}0{% endif %}{{order.date.getDate()}}/{% if order.date.getMonth() < 11 %}0{% endif %}{{ order.date.getMonth() + 1 }}/{{order.date.getFullYear()}}
-                                  </span></td>
-                                  <td><span class="field-label textAlign">{{order.car}}</span></td>
-                                  <td><span class="field-label textAlign">R$ {{parseFloat(order.price - order.discount).toFixed(2).toString().replace('.', ',')}}</span></td>
-
-                                  <td>
-                                    <a href="/{{module}}/form/{{order._id.toString()}}" class="btn btn-primary"><i class="fa fa-edit"></i> Editar</a>
-                                    <a href="/{{module}}/remove/{{order._id.toString()}}" class="btn btn-danger btn-remove"><i class="fa fa-close"></i> Remover</a>
-                                  </td>
+                                  <th>Pedido</th>
+                                  <th>Data</th>
+                                  <th>Placa</th>
+                                  <th>Valor</th>
+                                  <th>Ações</th>
                                 </tr>
+                              </thead>
+                              <tbody>
+                                {% for order in orders %}
 
-                              {% endfor %}
-                              {% if !orders.length %}
-                                <tr>
-                                  <td colspan="5" class="text-center">
-                                    Não há pedidos.
-                                  </td>
-                                </tr>
-                              {% endif %}
-                            </tbody>
-                          </table>
+                                  <tr>
+                                    <td><span class="field-label textAlign">{{order.orderNumber}}</span></td>
+                                    <td><span class="field-label textAlign">
+                                      {% if order.date.getDate() < 10 %}0{% endif %}{{order.date.getDate()}}/{% if order.date.getMonth() < 11 %}0{% endif %}{{ order.date.getMonth() + 1 }}/{{order.date.getFullYear()}}
+                                    </span></td>
+                                    <td><span class="field-label textAlign">{{order.car}}</span></td>
+                                    <td><span class="field-label textAlign">R$ {{parseFloat(order.price - order.discount).toFixed(2).toString().replace('.', ',')}}</span></td>
+
+                                    <td class="nowrap">
+                                      <a href="/{{module}}/form/{{order._id.toString()}}" class="btn btn-primary"><i class="fa fa-edit"></i> Editar</a>
+                                      <a href="/{{module}}/remove/{{order._id.toString()}}" class="btn btn-danger btn-remove"><i class="fa fa-close"></i> Remover</a>
+                                    </td>
+                                  </tr>
+
+                                {% endfor %}
+                                {% if !orders.length %}
+                                  <tr>
+                                    <td colspan="5" class="text-center">
+                                      Não há pedidos.
+                                    </td>
+                                  </tr>
+                                {% endif %}
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
                     </div>
                 </div>
