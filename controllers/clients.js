@@ -3,10 +3,14 @@ module.exports = (function() {
   var module = 'clientes';
 
   var list = function(req, res) {
-		var clients = req.db.get('clients');
-    clients.find({}, function(err, docs) {
+    return res.render('clients/list', { module: module });
+  };
+
+  var ajaxList = function(req, res) {
+    var clients = req.db.get('clients');
+    clients.find({}, { sort: { name: 1 } }, function(err, docs) {
 			if(err) throw err;
-			return res.render('clients/list', { module: module, clients: docs });
+			return res.send(docs);
 		});
   };
 
@@ -49,5 +53,6 @@ module.exports = (function() {
     , form: form
     , removeClient: removeClient
     , getInfo: getInfo
+    , ajaxList: ajaxList
   };
 })();

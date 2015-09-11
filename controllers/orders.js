@@ -5,10 +5,14 @@ module.exports = (function() {
   var counters = require('./counters');
 
   var list = function(req, res) {
+    return res.render('orders/list', { module: module });
+  };
+
+  var ajaxList = function(req, res) {
     var orders = req.db.get('orders');
     orders.find({}, function(err, docs) {
       if(err) throw err;
-      return res.render('orders/list', { module: module, orders: docs });
+      return res.send(docs);
     });
   };
 
@@ -46,7 +50,6 @@ module.exports = (function() {
     orders.findOne({ _id: _id }, function(err, doc) {
       if(err) throw err;
       var render = _.after(2, function() {
-        console.log(doc);
         return res.render('orders/form', { module: module, order: doc });
       });
 
@@ -135,6 +138,7 @@ module.exports = (function() {
 
   return {
     list: list
+    , ajaxList: ajaxList
     , form: form
     , remove: remove
     , postForm: postForm

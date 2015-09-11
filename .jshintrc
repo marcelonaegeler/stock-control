@@ -6,5 +6,6 @@
   "browser": true,
   "node": true,
   "devel": true,
-  "eqeqeq": true
+  "eqeqeq": true,
+  "esnext": true
 }

@@ -15,9 +15,9 @@
       client.val(ui.item._id);
       var itemsCars = ui.item.car;
       var carsLength = itemsCars.length;
-      var cars = [ '<option value="">Escolha um cliente</option>' ];
+      var cars = [ '<option value="">Escolha um carro</option>' ];
       for(var i = 0; i < carsLength; i++) {
-        cars.push([ '<option value="', itemsCars[i].plate,'">', itemsCars[i].model,'</option>' ].join(''));
+        cars.push([ '<option value="', itemsCars[i].plate,'">', itemsCars[i].plate, ' (', itemsCars[i].model,')</option>' ].join(''));
       }
 
       carSelect.html(cars.join('')).removeAttr('disabled');

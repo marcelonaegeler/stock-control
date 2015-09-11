@@ -16,7 +16,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
-                        <div class="panel-body">
+                        <div class="panel-body react-body">
+                          {#
                           <div class="table-responsive">
                             <table class="table">
                               <thead>
@@ -56,6 +57,7 @@
                               </tbody>
                             </table>
                           </div>
+                          #}
                         </div>
                     </div>
                 </div>
@@ -68,12 +70,9 @@
     <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/vendor/metisMenu/dist/metisMenu.min.js"></script>
     <script src="/javascripts/sb-admin-2.js"></script>
-    <script type="text/javascript">
-    (function() {
-      $('.btn-remove').click(function(event) {
-        if(!confirm('Deseja mesmo excluir este cliente?')) return false;
-        return true;
-      });
-    })();
-    </script>
+
+    <script src="/vendor/react/react.js"></script>
+    <script src="/vendor/react/JSXTransformer.js"></script>
+    <script src="/javascripts/api.js"></script>
+    <script type="text/jsx" src="/javascripts/orders-list.js"></script>
 {% endblock %}

@@ -1,3 +1,4 @@
+"use strict";
 var express = require('express')
 	, app = express()
 	, swig = require('swig')
@@ -29,7 +30,7 @@ app.use(session({
 }));
 
 // Set the DB global for requests
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
 	req.db = monk;
 	//if(!req.session.user && !req.originalUrl.match('/login')) return res.redirect('/login?redirect='+ req.originalUrl);
 	next();
@@ -41,14 +42,9 @@ app.use('/', require('./routes/stock')());
 /*
  * Not found
  * */
-app.use(function(req, res, next) {
-  return res.render('notFound');
-});
-
+app.use((req, res) => res.render('notFound'));
 
 /*
 * Listen
 */
-app.listen(3001, function() {
-	console.log('Magic happens on port 3001');
-});
+app.listen(3001, () => console.log('Magic happens on port 3001'));

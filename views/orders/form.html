@@ -30,7 +30,7 @@
                                   <option value="">Escolha um carro</option>
                                   {% for car in order.clientInfo.car %}
                                   {{order.car == car.plate}}
-                                    <option value="{{car.plate}}"{% if car.plate == order.car %}selected="selected"{% endif %}>{{car.model}}</option>
+                                    <option value="{{car.plate}}"{% if car.plate == order.car %}selected="selected"{% endif %}>{{car.plate}} ({{car.model}})</option>
                                   {% endfor %}
                                 </select>
                               </div>
@@ -42,9 +42,9 @@
                                   <h3 class="subtitle">Produtos:</h3>
                                 </div>
                                 <div class="col-xs-4 col-sm-5 col-md-4 text-right">
-                                  <button type="button" class="btn btn-primary addProduct"><i class="fa fa-plus visible-xs"></i><span class="hidden-xs">Adicionar produto</span></button>
+                                  <button type="button" class="btn btn-primary addProduct"><i class="fa fa-plus visible-xs"></i><span class="hidden-xs">Adicionar mais um produto</span></button>
                                 </div>
-                              </div>                        
+                              </div>
 
                               <div class="table-responsive table-order">
                                 <table class="table">
@@ -94,15 +94,15 @@
                               <div class="row">
                                 <div class="form-group col-sm-4">
                                   <label>Subtotal:</label>
-                                  <input type="text" name="subtotal" class="form-control" disabled value="{{parseFloat(order.price).toFixed(2).toString().replace('.', ',')}}" />
+                                  <input type="text" name="subtotal" class="form-control" disabled value="{{order.price ? parseFloat(order.price).toFixed(2).toString().replace('.', ',') : ''}}" />
                                 </div>
                                 <div class="form-group col-sm-4">
                                   <label>Desconto:</label>
-                                  <input type="text" name="discount" class="form-control maskMoney" value="{{parseFloat(order.discount).toFixed(2).toString().replace('.', ',')}}" />
+                                  <input type="text" name="discount" class="form-control maskMoney" value="{{order.discount ? parseFloat(order.discount).toFixed(2).toString().replace('.', ',') : ''}}" />
                                 </div>
                                 <div class="form-group col-sm-4">
                                   <label>Total:</label>
-                                  <input type="text" name="total" class="form-control" disabled value="{{parseFloat(order.price - order.discount).toFixed(2).toString().replace('.', ',')}}" />
+                                  <input type="text" name="total" class="form-control" disabled value="{{order.price ? parseFloat(order.price - order.discount).toFixed(2).toString().replace('.', ',') : ''}}" />
                                 </div>
                               </div>
 
@@ -128,5 +128,5 @@
     <script src="/vendor/metisMenu/dist/metisMenu.min.js"></script>
     <script src="/javascripts/sb-admin-2.js"></script>
     <script src="/javascripts/api.js"></script>
-    <script src="/javascripts/orders.js"></script>
+    <script src="/javascripts/orders-form.js"></script>
 {% endblock %}

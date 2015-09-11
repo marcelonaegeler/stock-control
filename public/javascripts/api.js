@@ -82,83 +82,19 @@ var api = (function() {
 		return 0;
 	};
 
-	/*
-	var liveSearch = function(options) {
-		var element = options.element
-			, parentElement = element.parentNode
-			, idStore = element.parentNode
-			, searchBlock
-			, url = options.url
-			, querySelector = '.live-search'
-			;
-
-		var init = function() {
-			var block = document.createElement('span');
-	    block.classList.add('load-block');
-	    block.innerHTML = 'Carregando...';
-	    block.style.display = 'none';
-			parentElement.appendChild(block);
-
-			element.setAttribute('autocomplete', 'off');
-	    searchBlock = block;
-		};
-
-		var setBlockContent = function(html) {
-			searchBlock.innerHTML = html;
-		};
-
-		var closeBlock = function() {
-			searchBlock.style.display = 'none';
-			return;
-		};
-
-		var loadResults = function(event) {
-			//console.log(event);
-			var query = event.currentTarget.value;
-			if(!query) return closeBlock();
-			if(searchBlock.style.display === 'none') searchBlock.style.display = '';
-
-			this.changeInput = function(el) {
-				console.log(element.value, el);
-				element.value = el.innerHTML;
-			};
-
-			setBlockContent('Carregando...');
-
-			api.ajax({
-				method: 'GET'
-				, url: url
-				, data: { query: query }
-				, success: function(data) {
-					var dataLength = data.length;
-					var toHTML = [];
-					for(var i = 0; i < dataLength; i++) {
-						toHTML.push([ '<a data-id="', data[i].id, '" href="javascript:void(0);" onclick="this.parentNode.parentNode.querySelector(\''+ querySelector +'\').changeInput(this)">', data[i].client, '</a>' ].join(''));
-					}
-					setBlockContent(toHTML.join(''));
-				}
-				, error: function() {
-					setBlockContent('Erro ao buscar resultados.');
-				}
-			});
-		};
-
-		(function() {
-			init();
-
-			element.onkeyup = loadResults;
-			element.onfocus = loadResults;
-		})();
-
+	var orderByNumber = function(a, b) {
+		var aName = a.orderNumber
+			, bName = b.orderNumber;
+		if(aName < bName) return -1;
+		if(aName > bName) return 1;
+		return 0;
 	};
-
-	*/
 
 	return {
 		ajax: ajax
 		, arrayPop: arrayPop
 		, changeSpecialChars: changeSpecialChars
 		, orderByName: orderByName
-		//, liveSearch: liveSearch
+		, orderByNumber: orderByNumber
 	};
 })();

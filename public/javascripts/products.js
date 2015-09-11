@@ -15,9 +15,13 @@
 				, delimiter: '.'
 			});
 		}
+		, componentWillReceiveProps: function() {
+			if(this.props.val)
+				this.refs.input.getDOMNode().value = this.props.val;
+		}
 		, render: function() {
 			return (
-				<input type="text" className="form-control" ref="input" onChange={this.props.change} value={this.state.value} />
+				<input type="text" className="form-control" ref="input" defaultValue={this.props.val} />
 			)
 		}
 	});
@@ -115,9 +119,6 @@
 		getInitialState: function() {
 			return { value: this.props.prop, tmpValue: this.props.prop };
 		}
-		, inputChange: function(event) {
-			this.setState({ tmpValue: event.target.value });
-		}
 		, saveNewValue: function(event) {
 			event.preventDefault();
 			this.setState({ value: this.state.tmpValue });
@@ -125,7 +126,7 @@
 			var data = {};
 			data.field = this.props.propName;
 			data.id = this.props.productId;
-			data.value = this.state.tmpValue;
+			data.value = this.refs.input.getDOMNode().value;
 
 			var self = this;
 			api.ajax({
@@ -144,15 +145,6 @@
 			if(column.classList.contains('open'))
 				this.refs.input.getDOMNode().focus();
 		}
-		, componentDidMount: function() {
-			if(this.props.currencyField) {
-				VMasker(this.refs.input.getDOMNode()).maskMoney({
-					precision: 2
-					, separator: ','
-					, delimiter: '.'
-				});
-			}
-		}
 		, render: function() {
 			return (
 				<td ref="column">
@@ -160,7 +152,7 @@
 						{this.props.currencyField ? 'R$ ' : ''}{this.state.value}
 					</span>
 					<form className="form-inline field-editable" onSubmit={this.saveNewValue}>
-						<input type="text" ref="input" className="form-control" onChange={this.inputChange} value={this.state.tmpValue} />
+						<MoneyInput ref="input" val={this.state.tmpValue} />
 						<button type="submit" className="btn btn-success" title="Salvar"><i className="fa fa-check"></i></button>
 						<button type="button" className="btn btn-danger" onClick={this.editField} title="Cancelar"><i className="fa fa-close"></i></button>
 					</form>

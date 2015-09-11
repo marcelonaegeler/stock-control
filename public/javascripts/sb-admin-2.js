@@ -31,4 +31,9 @@ $(function() {
     if (element.is('li')) {
         element.addClass('active');
     }
+
+    $('.btn-remove').click(function(event) {
+      if(!confirm('Deseja mesmo excluir este cliente?')) return false;
+      return true;
+    });
 });

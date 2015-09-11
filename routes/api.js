@@ -3,12 +3,16 @@ module.exports = function() {
 	var express = require('express')
 		, router = express.Router()
 		, clients = require('../controllers/clients')
+		, orders = require('../controllers/orders')
 		, products = require('../controllers/products')
 		;
 
   /*
    * API Ajax calls
    * */
+ 	router.get('/clients', clients.ajaxList);
+ 	router.get('/orders', orders.ajaxList);
+
   router.get('/products', products.list);
 	router.get('/search/products', products.search);
 

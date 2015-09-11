@@ -9,10 +9,6 @@ module.exports = (function() {
   	});
   };
 
-  var form = function(req, res) {
-
-  };
-
   var search = function(req, res) {
     if(!req.query.term) return res.send({ status: 1 });
 		var clients = req.db.get('products');
@@ -38,7 +34,6 @@ module.exports = (function() {
 
   return {
     list: list
-    , form: form
     , search: search
   };
 })();

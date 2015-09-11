@@ -50,7 +50,7 @@ module.exports = function() {
 	router.post('/clientes/novo', function(req, res) {
 		var clients = req.db.get('clients');
 		var dataSet = {};
-		dataSet.client = req.body.client;
+		dataSet.name = req.body.name;
 		dataSet.phone = req.body.phone;
 		dataSet.car = [];
 
@@ -76,7 +76,7 @@ module.exports = function() {
 		var clients = db.get('clients');
 
 		var dataSet = {};
-		dataSet.client = req.body.client;
+		dataSet.name = req.body.name;
 		dataSet.phone = req.body.phone;
 		dataSet.car = [];
 

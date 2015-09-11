@@ -33,3 +33,19 @@ x- coluna com código (na frente do nome)
 
 Ajuste
 x- Pesquisa por código tbm deve rolar
+
+
+-- 10/09
+#Máscara zoada
+
+Clientes:
+  #Busca
+  #Ordenação
+  Excluir veículo
+
+Pedidos:
+  Ordenação descendente
+  Busca (número, placa)
+  #Escolha um carro (placa, veículo)
+  #Bug de cálculos vazios
+  #Adicionar mais um produto
