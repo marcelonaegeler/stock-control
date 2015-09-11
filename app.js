@@ -30,7 +30,7 @@ app.use(session({
 }));
 
 // Set the DB global for requests
-app.use((req, res, next) => {
+app.use(function(req, res, next) {
 	req.db = monk;
 	//if(!req.session.user && !req.originalUrl.match('/login')) return res.redirect('/login?redirect='+ req.originalUrl);
 	next();
@@ -42,9 +42,13 @@ app.use('/', require('./routes/stock')());
 /*
  * Not found
  * */
-app.use((req, res) => res.render('notFound'));
+app.use(function(req, res) {
+	res.render('notFound');
+});
 
 /*
 * Listen
 */
-app.listen(3001, () => console.log('Magic happens on port 3001'));
+app.listen(3001, function() {
+	console.log('Magic happens on port 3001');
+});
