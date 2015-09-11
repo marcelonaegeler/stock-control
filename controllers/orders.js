@@ -40,7 +40,7 @@ module.exports = (function() {
 
     var loadClientInfo = function(_id, callback) {
       var clients = req.db.get('clients');
-      clients.findById(_id, function(err, doc) {
+      clients.findById(clients.id(_id), function(err, doc) {
         if(err) throw err;
         callback(doc);
       });

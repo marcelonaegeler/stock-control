@@ -35,8 +35,6 @@ module.exports = function() {
 	router.get('/usuarios/form/?:id', function(req, res) {
 		var _id = req.params.id;
 		if(!_id) return res.render('users/form');
-
-		// Get user data and etc
 		return res.render('users/form');
 	});
 
@@ -95,7 +93,6 @@ module.exports = function() {
 			return res.redirect('/clientes');
 		});
 	});
-
 
 	/*
 	* Orders

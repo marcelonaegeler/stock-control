@@ -85,8 +85,8 @@ var api = (function() {
 	var orderByNumber = function(a, b) {
 		var aName = a.orderNumber
 			, bName = b.orderNumber;
-		if(aName < bName) return -1;
-		if(aName > bName) return 1;
+		if(aName < bName) return 1;
+		if(aName > bName) return -1;
 		return 0;
 	};
 

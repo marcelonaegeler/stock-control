@@ -44,8 +44,8 @@ Clientes:
   Excluir veículo
 
 Pedidos:
-  Ordenação descendente
-  Busca (número, placa)
+  #Ordenação descendente
+  #Busca (número, placa)
   #Escolha um carro (placa, veículo)
   #Bug de cálculos vazios
   #Adicionar mais um produto

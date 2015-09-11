@@ -41,31 +41,39 @@
                             </div>
 
 
+                            <div class="list-cars">
 														{% for car in client.car %}
-                              <div class="list-cars row">
+                              <div class="row">
                                 <div class="form-group col-sm-6">
                                   <label>Modelo:</label>
                                   <input type="text" name="car[]" class="form-control" value="{{car.model}}" />
   															</div>
-                                <div class="form-group col-sm-6">
+                                <div class="form-group col-sm-4">
                                 	<label>Placa:</label>
                                 	 <input type="text" name="plate[]" class="form-control" value="{{car.plate}}" />
+  															</div>
+                                <div class="form-group col-sm-2">
+                                	<button type="button" class="btn btn-danger btn-remove-car" style="margin-top: 16px;"  ><i class="fa fa-close"></i> Remover</button>
   															</div>
   														</div>
                             {% endfor %}
 
                             {% if !client.car.length %}
-                              <div class="list-cars row">
+                              <div class="row">
                                 <div class="form-group col-sm-6">
                                   <label>Modelo:</label>
                                   <input type="text" name="car[]" class="form-control" />
                                 </div>
-                                <div class="form-group col-sm-6">
+                                <div class="form-group col-sm-4">
                                   <label>Placa:</label>
                                   <input type="text" name="plate[]" class="form-control" />
   															</div>
+                                <div class="form-group col-sm-2">
+                                  <button type="button" class="btn btn-danger btn-remove-car" style="margin-top: 16px;"  ><i class="fa fa-close"></i> Remover</button>
+                                </div>
   														</div>
                             {% endif %}
+                            </div>
 
                            	<div class="form-footer text-center">
                               <input type="hidden" name="_id" value="{{client._id.toString()}}" />
@@ -84,19 +92,5 @@
     <script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/vendor/metisMenu/dist/metisMenu.min.js"></script>
     <script src="/javascripts/sb-admin-2.js"></script>
-		<script>
-		(function() {
-			var btnAdd = $('#addCar');
-			var carListTemplate = [
-          '<div class="form-group col-sm-6">'
-				, '<label>Modelo:</label><input type="text" name="car[]" class="form-control" />'
-      	, '</div><div class="form-group col-sm-6">'
-        , '<label>Placa:</label> <input type="text" name="plate[]" class="form-control" />'
-      	, '</div>' ].join('');
-
-      btnAdd.click(function() {
-				$('.list-cars').append(carListTemplate);
-			});
-		})();
-		</script>
+    <script src="/javascripts/clients-form.js"></script>
 {% endblock %}

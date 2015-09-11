@@ -10,7 +10,7 @@ module.exports = function() {
   /*
    * API Ajax calls
    * */
- 	router.get('/clients', clients.ajaxList);
+
  	router.get('/orders', orders.ajaxList);
 
   router.get('/products', products.list);
@@ -88,32 +88,32 @@ module.exports = function() {
   	});
   });
 
+	/*
+	* Clients
+	*/
+	router.get('/client', clients.getInfo);
+	router.get('/clients', clients.ajaxList);
 	router.get('/search/clients', function(req, res) {
 		if(!req.query.term) return res.send({ status: 1 });
 		var clients = req.db.get('clients');
-		clients.find({ client: new RegExp(req.query.term, 'i') }, [ '-phone' ], function(err, docs) {
+		clients.find({ name: new RegExp(req.query.term, 'i') }, [ '-phone' ], function(err, docs) {
 			if(err) throw err;
-			//return res.send(docs);
 
 			var docsLength = docs.length;
 			var clientsDocs = [];
 			for(var i = 0; i < docsLength; i++) {
 				clientsDocs[i] = {
 					_id: docs[i]._id
-					, label: docs[i].client
+					, label: docs[i].name
 					, car: docs[i].car
 				};
 				if((i+1) === docsLength) send();
 			}
-
 			function send() {
 				return res.send(clientsDocs);
 			}
-
 		});
 	});
-
-	router.get('/client', clients.getInfo);
 
   return router;
 };
