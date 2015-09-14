@@ -1,2 +1,4 @@
-public/vendor
-node_modules
+/public/vendor
+/public/build
+/public/javascripts/compiled
+/node_modules
