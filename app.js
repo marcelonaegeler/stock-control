@@ -49,6 +49,4 @@ app.use(function(req, res) {
 /*
 * Listen
 */
-app.listen(3001, function() {
-	console.log('Magic happens on port 3001');
-});
+app.listen( 3002 );
